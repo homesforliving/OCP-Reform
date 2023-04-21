@@ -66,7 +66,7 @@ def analyze():
     transit_buffer = stops.buffer(400, resolution = 1)
     amenity_buffers = []
     for amenity in ammenities:
-        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': amenity.buffer(800, resolution=1)})
+        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': gpd.GeoDataFrame(geometry=amenity.buffer(800, resolution=1))})
         print("Imported {} data".format(amenity.loc[0,'amenity']))
 
     print("Finished importing amenity data")
@@ -79,25 +79,30 @@ def analyze():
 
     #reset index
     properties = properties.reset_index()
+      
+    for amenity in amenity_buffers:
+        properties_within_buffer = gpd.sjoin(properties, amenity['buffer'], predicate='within')
 
-    for property in properties.index:
-        print("Calculating amenities for property {} of {}".format(property, len(properties.index)))
-        amenities = []
-        for amenity in amenity_buffers:
-            if properties.loc[property,'geometry'].intersects(amenity['buffer'].unary_union):
-                amenities.append(amenity['type'])
+        # Increment the 'counter' column for points within the buffer
+        properties.loc[properties_within_buffer.index, 'amenity_count'] += 1
+        properties.loc[properties_within_buffer.index, 'label'] += amenity['type'] + ", "
+    
+    def fix_label(l):
+        if l[-2:] == ", ":
+            return l[:-2]
+        else:
+            return l
+    
+    properties['label'] = properties['label'].apply(fix_label)
         
-        label = ""
-        for amenity in amenities:
-            label += amenity + ", "
-        properties.loc[property,'label'] = label[:-2]
-        properties.loc[property,'amenity_count'] = len(amenities)
 
         
     print("Finished calculating amenities. Mapping...")
 
     properties = properties.to_crs('epsg:4326')
     properties.to_file("maps/analysis.geojson", driver='GeoJSON')
+
+    return
     
 def map(properties):
     properties['amenity_count'] = properties['amenity_count'].astype('int')
