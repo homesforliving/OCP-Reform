@@ -35,7 +35,7 @@ def collect_data(criteria):
     stores = gmaps.places_nearby(location=location, radius=5000, keyword=criteria)
 
     #get next page of results
-    next_page_token = stores["next_page_token"]
+    
     time.sleep(5) #This is required to prevent the API from returning an error
     
     """
@@ -55,9 +55,10 @@ def collect_data(criteria):
         df = pd.concat([df, new_row], ignore_index=True)
     for i in range(0,2):
         try:
+            next_page_token = stores["next_page_token"]
             time.sleep(5)
             stores_next_page = gmaps.places_nearby(location=location, radius= 5000, keyword=criteria, page_token=next_page_token)
-            next_page_token = stores_next_page["next_page_token"]
+            
         except:
             print("{} pages returned by API".format(i+1))
             break
@@ -73,12 +74,12 @@ def collect_data(criteria):
                 
 
     #to csv
-    df.to_csv("{}.csv".format(criteria), index=False)
+    df.to_csv("amenity data/{}.csv".format(criteria), index=False)
     return
 
 def map(criteria): #quickly map the data
     #turn into geopandas dataframe
-    df = pd.read_csv("{}.csv".format(criteria))
+    df = pd.read_csv("amenity data/{}.csv".format(criteria))
     gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude))
     gdf.drop(columns=["Longitude", "Latitude"], inplace=True)
     gdf.crs = "WGS84"
@@ -122,6 +123,6 @@ def map(criteria): #quickly map the data
     
     py.plot(fig, filename = criteria, auto_open=True)
 
-keyword = "medical clinic"
+keyword = "bar"
 collect_data(keyword)
 map(keyword)

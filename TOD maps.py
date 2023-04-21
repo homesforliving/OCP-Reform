@@ -51,8 +51,8 @@ def update_static(url='http://victoria.mapstrat.com/current/google_transit.zip',
     return
 
 def filter_stops_by_route(route): #input a route. Creates a shapefile containing points representing each stop served by the route. **Includes stops served by route variants, e.x. 7N
-    stop_times = pd.read_csv('google_transit/stop_times.csv')
-    stops = pd.read_csv('google_transit/stops.csv')
+    stop_times = pd.read_csv('transit data/google_transit/stop_times.csv')
+    stops = pd.read_csv('transit data/google_transit/stops.csv')
     print("Creating list of stops...")
     stop_IDs = []
     for ind in stop_times.index:
@@ -68,14 +68,14 @@ def filter_stops_by_route(route): #input a route. Creates a shapefile containing
         stop_codes.append(int(stops.loc[stops['stop_id']==id]['stop_code']))
     print("{} stops identified. Creating stop shapefiles...".format(len(stop_codes)))
 
-    stops = geopandas.read_file('vic_shapefile_busstops/bus_stops.shp')
+    stops = geopandas.read_file('transit data/vic_shapefile_busstops/bus_stops.shp')
     stops = stops[stops['stopid'].isin(stop_codes)]
 
-    stops.to_file("filtered stops/route {} stops.shp".format(route))
+    stops.to_file("transit data/filtered stops/route {} stops.shp".format(route))
     return
 
 def map(routes, map_type="default"): #Input a LIST of routes. Creates ONE html file showing the transit zoning map, for the list of routes.
-    stops = geopandas.read_file("filtered stops/route {} stops.shp".format(routes[0]))
+    stops = geopandas.read_file("transit data/filtered stops/route {} stops.shp".format(routes[0]))
 
     if len(routes) > 0:
         for i in range(1,len(routes)):
@@ -165,12 +165,12 @@ def map(routes, map_type="default"): #Input a LIST of routes. Creates ONE html f
     fig.write_html('maps/TOD.html')
     return
 
-routes = ['4', '11', '14','15', '95', '2', '5', '7','3','27']
-"""
-for route in routes:
-    filter_stops_by_route(route)"""
+routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
 
-map(routes,map_type="within_400m")
+for route in routes:
+    filter_stops_by_route(route)
+
+#map(routes,map_type="within_400m")
 
 
 #update_static()

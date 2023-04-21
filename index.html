@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>OCP Reform</title>
+  <meta charset="UTF-8" />
+  <script src="https://kit.fontawesome.com/895917e848.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+
+  
+  <!-- HTML Meta Tags -->
+  <title>Land Assessments</title>
+  <meta name="description" content="Who has suppressed land values?">
+
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="https://markedwardson.me/Land-Assessments/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Land Assessments">
+  <meta property="og:description" content="Who has suppressed land values?">
+  <meta property="og:image" content="https://github.com/HyperbolicStudios/Land-Assessments/blob/main/preview.png?raw=true">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="markedwardson.me">
+  <meta property="twitter:url" content="https://markedwardson.me/Land-Assessments/">
+  <meta name="twitter:title" content="Land Assessments">
+  <meta name="twitter:description" content="Who has suppressed land values?">
+  <meta name="twitter:image" content="https://github.com/HyperbolicStudios/Land-Assessments/blob/main/preview.png?raw=true">
+
+  <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+        
+  <link rel="manifest" href="favicon/site.webmanifest">
+</head>
+
+
+<body>
+
+  <header id="topHeader" onclick="openNav()">
+    <div></div>
+    <h3>OCP Reform Project</h3>
+
+    <a href="#" onclick="return openNav()" class="align-right openButton">Menu &nbsp;&#9776;</a>
+    <div></div>
+  </header></a>
+
+  <nav id="menu">
+    <a href="# " onclick="closeNav()">
+      <h5 class="menu-text close" id="closeButton">&times;</h5>
+    </a>
+    <a href="/">
+      <h5 class="menu-text">Home</h5>
+    </a>
+    <a href="https://github.com/hyperbolicstudios">
+      <h5 class="menu-text">Github</h5>
+    </a>
+   <div></div>
+
+  </nav>
+  <section class="divider">
+  </section>
+<!--- 
+  <section class="container" id="selection">
+
+    <label>Colour by: </label>
+    <button type="button" class="mode" aria-pressed="true" onclick="update(this)">Land Values</button>
+    <div> </div>
+    <button type="button" class="mode" aria-pressed="false" onclick="update(this)">Total Value</button>
+
+  </section> -->
+
+
+  <h1 id="chart_title">Where is it 'suitable' to build an apartment?</h1>
+
+  <iframe title="title" class="map" scrolling="no" seamless="seamless" src="maps/analysis.html" height="700" width="90%"></iframe>
+  
+  <div class="divider"></div>
+
+  <section class="container">
+
+    <p>
+      Criteria: all properties that are:
+      </p>  
+      <ul>
+        <li>Within 400m of a bus stop, and</li>
+        <li>Within 400m of ammenities such as grocery stories, banks, schools, etc.</li>
+      </ul>
+    <p>This isn't meant as a comprehensive survey of Victoria ammenities, but rather an illustration of which neighbourhoods are well-resourced and which ones aren't.</p>
+    <p>See the underlying data and code on <a title="Project Github" href="https://github.com/homesforliving">Github.</a></p>
+
+  </section>
+  <div class="divider"></div>
+  <footer id="footer">
+
+    <a title="My Github" href="https://github.com/HyperbolicStudios/"><i class="fa-brands fa-github fa-2xl"></i></a>
+
+  </footer>
+
+</body>
+
+<script src="js/script.js"></script>
+
+</html>

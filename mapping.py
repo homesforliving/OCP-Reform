@@ -25,12 +25,12 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
-transit_routes = ['4', '11', '14','15', '95', '2', '5', '7','3','27']
-
-#list of geodataframes - each one is a different amenity
-ammenities = []
+transit_routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
 
 def analyze():
+    #list of geodataframes - each one is a different amenity
+    ammenities = []
+    
     #import ammenities: bus stops, grocery stores, hospitals, etc.  
     #list of files in 'amenity data'
     amenity_files = os.listdir('amenity data')
@@ -53,23 +53,29 @@ def analyze():
 
     stops = stops.to_crs('epsg:26910')
 
-    properties = gpd.read_file("cov properties/cov properties.geojson")
+    properties = gpd.read_file("cov properties/cov properties dissolved.geojson")
+    #drop all columns except geometry and AddressCombined
+    properties = properties[['geometry', 'AddressCombined']]
+
     properties = properties.to_crs('epsg:26910')
 
+    #check for invalid geometries
+    properties = properties[properties.is_valid]
+
     #buffer stops by 400m
-    transit_buffer = stops.buffer(400)
+    transit_buffer = stops.buffer(400, resolution = 1)
     amenity_buffers = []
     for amenity in ammenities:
-        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': amenity.buffer(400)})
+        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': amenity.buffer(800, resolution=1)})
         print("Imported {} data".format(amenity.loc[0,'amenity']))
 
-    print("Imported amenity data")
+    print("Finished importing amenity data")
     #find properties within transit buffer
     properties = properties[properties.intersects(transit_buffer.unary_union)]
 
     print("Imported property data")
-    properties['amenity_count'] = None
-    properties['label'] = None
+    properties['amenity_count'] = 0
+    properties['label'] = ""
 
     #reset index
     properties = properties.reset_index()
@@ -83,32 +89,38 @@ def analyze():
         
         label = ""
         for amenity in amenities:
-            label += amenity + "\n"
-        properties.loc[property,'label'] = label
+            label += amenity + ", "
+        properties.loc[property,'label'] = label[:-2]
         properties.loc[property,'amenity_count'] = len(amenities)
 
+        
     print("Finished calculating amenities. Mapping...")
 
-    properties.to_files("maps/analysis.geojson", driver='GeoJSON')
+    properties = properties.to_crs('epsg:4326')
+    properties.to_file("maps/analysis.geojson", driver='GeoJSON')
     
 def map(properties):
+    properties['amenity_count'] = properties['amenity_count'].astype('int')
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_count',
-                                color_continuous_scale="Viridis",
-                                range_color=(1000, 4000),
+                                color_continuous_scale="Viridis_r",
                                 mapbox_style="carto-positron",
-
+                                
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
                                 opacity=.5,
-                                hover_data = ['label']
+                                hover_data = ['AddressCombined', 'label']
                                 )
 
     fig.update_traces(marker_line_width=.01,
                             hovertemplate = """
-                            <b>Close to:</b><br>
-                            %{customdata[0]}
+                            <b>%{customdata[0]}. Close to:</b><br> 
+                            %{customdata[1]}
                             """
                     )
-
-    fig.to_html("maps/analysis.html")
+    #to html
+    fig.write_html("maps/analysis.html")
+    
+    
+    return
 
 analyze()
+map(gpd.read_file("maps/analysis.geojson"))
