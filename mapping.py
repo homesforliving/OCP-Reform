@@ -116,11 +116,13 @@ def map(properties):
                             %{customdata[1]}
                             """
                     )
+    #zero margin
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     #to html
     fig.write_html("maps/analysis.html")
     
     
     return
 
-analyze()
+#analyze()
 map(gpd.read_file("maps/analysis.geojson"))
