@@ -107,8 +107,8 @@ def analyze():
 def map(properties):
     properties['amenity_count'] = properties['amenity_count'].astype('int')
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_count',
-                                color_continuous_scale="Viridis_r",
-                                mapbox_style="carto-positron",
+                                color_continuous_scale="cividis",
+                                mapbox_style="carto-darkmatter",
                                 
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
                                 opacity=.5,
