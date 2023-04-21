@@ -122,6 +122,6 @@ def map(criteria): #quickly map the data
     
     py.plot(fig, filename = criteria, auto_open=True)
 
-keyword = "coffee shop"
+keyword = "medical clinic"
 collect_data(keyword)
 map(keyword)
