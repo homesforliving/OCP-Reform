@@ -6,6 +6,6 @@ We need data of ammenities in the City of Victoria. Create csv files with the ge
 
 Mark is writing some code to combine them all with the zoning and transit data we already have.
 
-A sample of what we have so far: https://github.com/homesforliving/OCP-Reform
+A sample of what we have so far: https://homesforliving.github.io/OCP-Reform/
 
 ![image](https://user-images.githubusercontent.com/36494032/233565452-6071d5dc-d47c-4591-bcf5-443b80ed543f.png)
