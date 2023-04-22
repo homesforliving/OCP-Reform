@@ -9,3 +9,6 @@ Mark is writing some code to combine them all with the zoning and transit data w
 A sample of what we have so far: https://homesforliving.github.io/OCP-Reform/
 
 ![image](https://user-images.githubusercontent.com/36494032/233565452-6071d5dc-d47c-4591-bcf5-443b80ed543f.png)
+
+Tidbits of info:
+- property info source: https://hub.arcgis.com/datasets/SIPP::crd-properties/explore?layer=2&location=48.453285%2C-123.404663%2C12.43

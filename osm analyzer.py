@@ -54,4 +54,12 @@ for amenity in amenities.amenity.unique():
 
         #to csv
         df.to_csv("amenity data/" + amenity + ".csv", index=False)
+
+    #create new df with two columns: list of unique amenities that aren't NaN, and the number 1
+    weights = pd.DataFrame(columns=["amenity", "weight"])
+    weights["amenity"] = amenities.amenity.unique()
+    weights["weight"] = 1
+
+    #to csv
+    weights.to_csv("amenity weights.csv", index=False)
     

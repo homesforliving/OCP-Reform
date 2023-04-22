@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 from inspect import getsourcefile
 from os.path import abspath
 
+from transit_score import transit_score
+
 #set active directory to file location
 directory = abspath(getsourcefile(lambda:0))
 #check if system uses forward or backslashes for writing directories
@@ -26,11 +28,9 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
-transit_routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
-
 def analyze():
     #list of geodataframes - each one is a different amenity
-    ammenities = []
+    amenities = []
     
     #import ammenities: bus stops, grocery stores, hospitals, etc.  
     #list of files in 'amenity data'
@@ -39,22 +39,14 @@ def analyze():
         df = pd.read_csv('amenity data/'+file)
         #convert to gdf using Latitude	Longitude
         gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude))
-        gdf['amenity'] = file[:-4]
+        gdf['category'] = file[:-4]
         #wgs84 is the standard lat/long coordinate system
         gdf.crs = 'epsg:4326'
         #convert to NAD UTM 10N
         gdf = gdf.to_crs('epsg:26910')
-        ammenities.append(gdf)
+        amenities.append(gdf)
 
-    #stops is a geodataframe of all bus stops
-    stops = gpd.GeoDataFrame()
-
-    for route in transit_routes:
-        stops = gpd.GeoDataFrame(pd.concat([stops,gpd.read_file("transit data/filtered stops/route {} stops.shp".format(route))]))
-
-    stops = stops.to_crs('epsg:26910')
-
-    properties = gpd.read_file("cov properties/cov properties dissolved.geojson")
+    properties = gpd.read_file("cov properties/core muni properties dissolved.geojson")
     #drop all columns except geometry and AddressCombined
     properties = properties[['geometry', 'AddressCombined']]
 
@@ -63,40 +55,67 @@ def analyze():
     #check for invalid geometries
     properties = properties[properties.is_valid]
 
-    #buffer stops by 400m
-    transit_buffer = stops.buffer(400, resolution = 1)
-    amenity_buffers = []
-    for amenity in ammenities:
-        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': gpd.GeoDataFrame(geometry=amenity.buffer(800, resolution=1))})
-        print("Imported {} data".format(amenity.loc[0,'amenity']))
+    #calculate transit score
+    print("Calculating transit score...")
+    properties = transit_score(properties)
 
-    print("Finished importing amenity data")
-    #find properties within transit buffer
-    properties = properties[properties.intersects(transit_buffer.unary_union)]
-
-    print("Imported property data")
-    properties['amenity_count'] = 0
+    properties['amenity_score'] = 0
     properties['label'] = ""
 
     #reset index
     properties = properties.reset_index()
+
+    #import weights
+    weights = pd.read_csv('amenity weights.csv')
       
-    for amenity in amenity_buffers:
-        properties_within_buffer = gpd.sjoin(properties, amenity['buffer'], predicate='within')
-
-        # Increment the 'counter' column for points within the buffer
-        properties.loc[properties_within_buffer.index, 'amenity_count'] += 1
-        properties.loc[properties_within_buffer.index, 'label'] += amenity['type'] + ", "
-    
-    def fix_label(l):
-        if l[-2:] == ", ":
-            return l[:-2]
-        else:
-            return l
-    
-    properties['label'] = properties['label'].apply(fix_label)
+    for amenity in amenities:
         
+        #amenity is a gdf of amenities of a certain type (e.g. restarants)
+        #category of amenity.category (see line 42)
+        category = amenity.category[0]
+        print("Performing join with " + category + "...")
+       
+        buffered_properties = properties.copy()
+        buffered_properties.geometry = properties.geometry.buffer(400)
 
+        # Perform spatial join
+        joined = gpd.sjoin(buffered_properties, amenity, predicate='contains')
+
+        # Group by property (AddressCombined) and count the number of amenities and put this count for each property in a new column
+        grouped = joined.groupby('AddressCombined').count()[['category']]
+
+        # Merge with properties
+        properties = properties.merge(grouped, how='left', on='AddressCombined')
+
+        #rename category column name to category
+        properties = properties.rename(columns={'category':category})
+
+        #replace NaN with 0
+        properties[category] = properties[category].fillna(0)
+
+        #increment amenity score
+        w = weights[weights['amenity'] == category]['weight'].values[0]
+        properties.amenity_score =+ properties[category]*w
+        break
+    
+    print(properties)
+    return
+    properties.ocp_score = properties.transit_score*.4 + properties.amenity_score*.6
+            
+    def create_label(row):
+        label = ""
+        for amenity in amenities:
+            if(row[amenity.category[0]] > 0):
+                label = label + amenity.category[0] + ", "
+        if label != "":
+            label = label[:-2]
+        return label
+    
+    properties['label'] = properties.apply(create_label, axis=1)
+
+    #calculate ocp score
+    #these weights are arbitrary 
+    
         
     print("Finished calculating amenities. Mapping...")
 
@@ -107,8 +126,8 @@ def analyze():
     
 def map(properties):
     properties['amenity_count'] = properties['amenity_count'].astype('int')
-    properties.amenity_count = (properties.amenity_count)
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_count',
+    properties.amenity_count = np.log(properties.amenity_count)/np.log(100)
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='ocp_score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
                                 
@@ -131,5 +150,5 @@ def map(properties):
     
     return
 
-#analyze()
-map(gpd.read_file("maps/analysis.geojson"))
+analyze()
+#map(gpd.read_file("maps/analysis.geojson"))
