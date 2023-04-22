@@ -14,6 +14,15 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
+# property_exclude_list is a list of properties that should not be included in
+# in the output.
+# Street naems should be all uppercase.
+property_exclude_list = [
+    '100 COOK', # Beacon Hill Park
+    '1495 FAIRFIELD', # Ross Bay Cemetery
+    '1401 ROCKLAND', # Government House
+]
+
 #deletes invalid geometries
 #also: properties data shows small boxes for apartments, condos, etc.
 #this function simplifies the shapefile and combines them all to reduce processing needs
@@ -37,7 +46,8 @@ def simplify_properties():
     print('Number of rows: ' + str(len(properties.index)))
     #reduce df to just AddressCombined, City and geometry
     properties = properties[[ 'City', 'AddressCombined',  'geometry']]
-
+    properties = properties[~properties['AddressCombined'].isin(property_exclude_list)]
+    
     #dissolve shapes with the same AddressCombined
     properties = properties.dissolve(by='AddressCombined')
 
