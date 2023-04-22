@@ -1,60 +1,15 @@
-Name,Latitude,Longitude,Address
-Bard & Banker,48.4248802,-123.3680934,"1022 Government St, Victoria"
-Big Bad Johns,48.4233975,-123.3654218,"919 Douglas St, Victoria"
-Yates Street Taphouse,48.4259216,-123.3627102,"759 Yates St, Victoria"
-Bartholomew's Public House,48.421789,-123.3653133,"777 Douglas St, Victoria"
-Smiths Bar & Restaurant,48.422624,-123.363539,"777 Courtney St, Victoria"
-Irish Times Pub,48.425805,-123.367833,"1200 Government St, Victoria"
-The Sticky Wicket Bar & Restaurant,48.4230776,-123.3654012,"919 Douglas St, Victoria"
-Leopold's Tavern - Victoria,48.42682749999999,-123.3681343,"570 Yates St, Victoria"
-View Street Social,48.4250818,-123.3628655,"753 View St, Victoria"
-Ross Bay Pub,48.412549,-123.3391469,"1516 Fairfield Rd #7, Victoria"
-Hecklers Bar & Grill,48.44315,-123.385892,"123 Gorge Rd E, Victoria"
-Phoenix Bar and Grill,48.4664353,-123.3623581,"3944 Quadra St, Victoria"
-5th St. Bar & Grill,48.439676,-123.3581221,"1028 Hillside Ave, Victoria"
-The Churchill,48.4255532,-123.3678056,"1140 Government St, Victoria"
-Refuge Tap Room,48.4242995,-123.3611086,"832 Fort St, Victoria"
-The Loft Pub,48.4428071,-123.38247,"229 Gorge Rd E, Victoria"
-Clive's Classic Lounge,48.42213049999999,-123.364672,"740 Burdett Ave, Victoria"
-The Local,48.42606199999999,-123.369869,"1205 Wharf St, Victoria"
-Penny Farthing Public House,48.4266363,-123.315053,"2228 Oak Bay Ave, Victoria"
-Maude Hunter's Pub,48.4623748,-123.333195,"3810 Shelbourne St, Victoria"
-Darcy's Pub Downtown,48.4257429,-123.3697524,"1127 Wharf St, Victoria"
-Citrus & Cane,48.43147889999999,-123.3649956,"1900 Douglas St, Victoria"
-James Bay Inn Pub,48.4153947,-123.3694605,"270 B Government St, Victoria"
-Garrick's Head Pub,48.425659,-123.3681968,"1140 Government St, 69 Bastion Square, Victoria"
-Tora Tiki,48.4286942,-123.3638301,"714 Cormorant St, Victoria"
-Smuggler's Cove Pub,48.4610023,-123.2965087,"2581 Penrhyn St, Victoria"
-The Games Room,48.4231192,-123.3652011,"919 Douglas St, Victoria"
-Christie's Carriage House Pub,48.4287031,-123.3315752,"1739 Fort St, Victoria"
-Beagle Pub,48.41418280000001,-123.3563923,"301 Cook St, Victoria"
-The Clubhouse,48.4235322,-123.365361,"919 Douglas St, Victoria"
-The Collective Wine Bar & Kitchen,48.4142108,-123.3569138,"230 Cook St #107, Victoria"
-Earls Kitchen + Bar,48.4255521,-123.3674255,"1199 Government Street 100 - Bay, Center Victoria, Victoria"
-The Snug Pub,48.4201583,-123.2990865,"1175 Beach Dr, Victoria"
-Cenote Restaurant and Lounge,48.426229,-123.362843,"768 Yates St, Victoria"
-Bar 500 Eatery,48.4205309,-123.3757297,"500 Oswego St, Victoria"
-Tug Eatery and Bar,48.429272,-123.3710233,"407 Swift St #100, Victoria"
-The Drake Eatery,48.4283677,-123.3690927,"517 Pandora Ave, Victoria"
-LURE Restaurant & Bar,48.4267944,-123.3749373,"100 Harbour Rd, Victoria"
-Little Jumbo Restaurant and Bar,48.42527,-123.36928,"Down the Hall, 506 Fort St #102, Victoria"
-Darcy's Pub Downtown,48.4257429,-123.3697524,"1127 Wharf St, Victoria"
-Citrus & Cane,48.43147889999999,-123.3649956,"1900 Douglas St, Victoria"
-James Bay Inn Pub,48.4153947,-123.3694605,"270 B Government St, Victoria"
-Garrick's Head Pub,48.425659,-123.3681968,"1140 Government St, 69 Bastion Square, Victoria"
-Tora Tiki,48.4286942,-123.3638301,"714 Cormorant St, Victoria"
-Smuggler's Cove Pub,48.4610023,-123.2965087,"2581 Penrhyn St, Victoria"
-The Games Room,48.4231192,-123.3652011,"919 Douglas St, Victoria"
-Christie's Carriage House Pub,48.4287031,-123.3315752,"1739 Fort St, Victoria"
-Beagle Pub,48.41418280000001,-123.3563923,"301 Cook St, Victoria"
-The Clubhouse,48.4235322,-123.365361,"919 Douglas St, Victoria"
-The Collective Wine Bar & Kitchen,48.4142108,-123.3569138,"230 Cook St #107, Victoria"
-Earls Kitchen + Bar,48.4255521,-123.3674255,"1199 Government Street 100 - Bay, Center Victoria, Victoria"
-The Snug Pub,48.4201583,-123.2990865,"1175 Beach Dr, Victoria"
-Moxies Victoria Restaurant,48.4255311,-123.3559586,"1010 Yates St Suite 1, Victoria"
-Cenote Restaurant and Lounge,48.426229,-123.362843,"768 Yates St, Victoria"
-Bar 500 Eatery,48.4205309,-123.3757297,"500 Oswego St, Victoria"
-Tug Eatery and Bar,48.429272,-123.3710233,"407 Swift St #100, Victoria"
-The Drake Eatery,48.4283677,-123.3690927,"517 Pandora Ave, Victoria"
-LURE Restaurant & Bar,48.4267944,-123.3749373,"100 Harbour Rd, Victoria"
-Little Jumbo Restaurant and Bar,48.42527,-123.36928,"Down the Hall, 506 Fort St #102, Victoria"
+Name,Latitude,Longitude
+Vis A Vis,48.4266118,-123.3148761
+Citrus & Cane,48.4315271,-123.3648974
+Big Bad John's,48.4234099,-123.3654549
+The Clubhouse,48.4233333,-123.3654724
+Clive's Classic Lounge,48.4225954,-123.364212
+Shadow Mountain,48.4300678,-123.3679859
+Little Jumbo,48.4251796,-123.3693342
+Drake Eatery,48.4283938,-123.3690362
+Bengal Lounge,48.4212559,-123.3675223
+Q bar,48.4218429,-123.3678337
+Veranda,48.421625,-123.368002
+The Vicious Poodle,48.4271995,-123.363383
+Whistle Buoy Brewing Company,48.4281147,-123.3685251
+Carlton Club Cabaret,48.430473,-123.401441

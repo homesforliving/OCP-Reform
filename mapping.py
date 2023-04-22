@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import geopandas as gpd
 import googlemaps
 import matplotlib.pyplot as plt
@@ -106,6 +107,7 @@ def analyze():
     
 def map(properties):
     properties['amenity_count'] = properties['amenity_count'].astype('int')
+    properties.amenity_count = (properties.amenity_count)
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_count',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",

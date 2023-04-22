@@ -1,41 +1,44 @@
-Name,Latitude,Longitude,Address
-Lampson School,48.4323876,-123.4048672,"670 Lampson St, Victoria"
-Tillicum Elementary School,48.4522164,-123.3930838,"3155 Albina St, Victoria"
-Victor School,48.4322879,-123.3374749,"2260 Victor St, Victoria"
-Victoria School for Ideal Education,48.440409,-123.339365,"2820 Belmont Ave, Victoria"
-École Marigold Elementary School,48.461707,-123.4093549,"3751 Grange Rd, Victoria"
-Victoria West Elementary School,48.4343173,-123.3880084,"750 Front St, Victoria"
-Spectrum Community School,48.4630461,-123.4078938,"957 Burnside Rd W, Saanich"
-St. Michaels University School - Junior School Campus,48.4180419,-123.3182505,"820 Victoria Ave, Victoria"
-Esquimalt High School,48.4382514,-123.396515,"847 Colville Rd, Victoria"
-Quadra Elementary School,48.4461785,-123.3606194,"3031 Quadra St, Victoria"
-Monterey Middle School,48.4182607,-123.3146625,"851 Monterey Ave, Victoria"
-Sir James Douglas Elementary,48.415467,-123.3485322,"401 Moss St, Victoria"
-École Macaulay Elementary School,48.4253509,-123.4058086,"1010 Wychbury Ave, Victoria"
-James Bay Community School,48.4170807,-123.3796244,"140 Oswego St, Victoria"
-École Intermédiaire Lansdowne Middle School,48.4457457,-123.3281403,"1765 Lansdowne Rd, Victoria"
-Campus View Elementary School,48.4658045,-123.321252,"3900 Gordon Head Rd, Victoria"
-Oaklands Elementary School,48.4410714,-123.3388397,"2827 Belmont Avenue, Victoria"
-Cloverdale Traditional Elementary School,48.4538446,-123.3594188,"3427 Quadra St, Victoria"
-École Willows Elementary,48.435784,-123.3100887,"2290 Musgrave St, Victoria"
-Lansdowne Middle School South Campus,48.4402513,-123.3284737,"2780 Richmond Rd, Victoria"
-Vancouver Island School of Innovation and Inquiry,48.4398105,-123.3500466,"1307 Hillside Ave, Victoria"
-Rockheights Middle School,48.4347485,-123.4108953,"1250 Highrock Ave, Victoria"
-Colquitz Middle School,48.4606617,-123.3930223,"505 Dumeresq St, Victoria"
-Esquimalt High School Library,48.4385947,-123.4097334,"4N9, 847 Colville Rd, Victoria"
-École Intermediaire Cedar Hill Middle,48.4661363,-123.3372596,"3910 Cedar Hill Rd, Victoria"
-Glenlyon Norfolk School – Junior School,48.4287777,-123.3073383,"1701 Beach Dr, Victoria"
-South Park Family School,48.4177378,-123.3661835,"508 Douglas St, Victoria"
-McKenzie Elementary,48.46714739999999,-123.3919264,"4005 Raymond St N, Victoria"
-École Intermédiaire Central Middle School,48.4240912,-123.3468024,"1280 Fort St, Victoria"
-Victoria High School,48.4416056,-123.3626897,"923 Topaz Ave, Victoria"
-École Élémentaire Doncaster Elementary,48.45685580000001,-123.3384377,"1525 Rowan St, Victoria"
-Frank Hobbs Elementary,48.4651067,-123.3004904,"3875 Haro Rd, Victoria"
-St. Joseph’s Elementary School,48.4618468,-123.4038261,"757 Burnside Rd W, Victoria"
-Margaret Jenkins Elementary,48.4161716,-123.3295146,"1824 Fairfield Rd, Victoria"
-Victoria High School,48.4296903,-123.3465812,"1260 Grant St, Victoria"
-Braefoot Elementary School,48.4696218,-123.3445854,"1440 Harrop Rd, Victoria"
-George Jay Elementary,48.4329099,-123.3512873,"1118 Princess Ave, Victoria"
-Pacific School of Innovation and Inquiry,48.422594,-123.36619,"808 Douglas St #100, Victoria"
-Arbutus Global Middle School,48.4710177,-123.3073251,"2306 Edgelow St, Victoria"
-Selkirk Montessori School,48.4409313,-123.3782572,"2970 Jutland Rd, Victoria"
+Name,Latitude,Longitude
+South Park Family School,48.4176852968812,-123.3663925631646
+Tillicum Elementary School,48.45208588782974,-123.39298679535537
+Willows Elementary,48.43605869133928,-123.31107375232759
+Oak Bay High School,48.43184914471744,-123.31789180241397
+Victoria High School,48.42962173725503,-123.3472566929494
+Central Middle School,48.423977898147285,-123.34756008873387
+Oaklands Elementary,48.440921012474526,-123.33810068781209
+Quadra Elementary,48.44575846850749,-123.35994175290332
+Lansdowne Middle School - North Campus,48.44491886475081,-123.32966685859543
+Lansdowne Middle School - South Campus,48.43969805335756,-123.3293746162865
+St. Michaels University School,48.451662135493194,-123.32815481379619
+Sir James Douglas Elementary,48.41561739669667,-123.34786097082524
+St. Patrick's School,48.433738192163034,-123.32414547944065
+Doncaster Elementary School,48.45640266169761,-123.33727599545453
+Cloverdale Traditional School,48.45387399254354,-123.3590640766989
+George Jay Elementary,48.433078683756975,-123.35100212581632
+James Bay Community School,48.416945770896604,-123.37969558757581
+Margaret Jenkins Elementary,48.416164052372274,-123.32896297857232
+Ecole Marigold Elementary,48.46221985225485,-123.40933296034167
+Spectrum Community School,48.462463024968,-123.40642936367028
+Sundance-Bank Elementary,48.427788198884315,-123.32822865115733
+Victoria West Elementary,48.434440126978,-123.38820617477771
+Colquitz Middle School,48.460096838048116,-123.39302928693039
+Monterey Middle School,48.41852813595576,-123.3139925879231
+S.J. Willis Alternative School,48.44080551398717,-123.36256272015581
+Victor School,48.43210990160166,-123.33773858357635
+SMUS Middle School,48.45181359881764,-123.32994460722503
+School House,48.452122907990734,-123.32851362477452
+Selkirk Montessori School,48.44088199775319,-123.37840148960954
+Glenlyon Norfolk School - Beach Drive Campus,48.42850992488821,-123.30740432561075
+St. Michaels University School - Junior School,48.41793000211501,-123.31903007487287
+Victoria International High School - Uplands Campus,48.453367874199515,-123.31311455983756
+Play Field - Glenlyon Norfolk School - Beach Drive Campus,48.42923241986268,-123.30907912845215
+Glenlyon Norfolk School - Pemberton Woods Campus,48.420325072371156,-123.33014075500023
+Vancouver Island School of Art,48.43656057144234,-123.35795446308842
+St. Joseph's Elementary School,48.461454001049916,-123.40432593672313
+,48.43243393181379,-123.40518565948017
+Ècole Macaulay Elementary School,48.42602598279855,-123.40568701421711
+Ècole Victor–Brodeur,48.4321348586498,-123.4012197843399
+,48.438094741614854,-123.39826194215566
+Global Village English Centres,48.4262422,-123.3664245
+Con Brio Music,48.4115826,-123.3500801
+Canadian College of Performing Arts,48.4278675,-123.3189167
