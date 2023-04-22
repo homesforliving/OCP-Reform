@@ -81,7 +81,7 @@ def analyze():
     properties = properties.reset_index()
       
     for amenity in amenity_buffers:
-        properties_within_buffer = gpd.sjoin(properties, amenity['buffer'], predicate='within')
+        properties_within_buffer = gpd.sjoin(properties, amenity['buffer'], predicate='intersects')
 
         # Increment the 'counter' column for points within the buffer
         properties.loc[properties_within_buffer.index, 'amenity_count'] += 1
