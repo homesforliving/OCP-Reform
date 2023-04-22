@@ -22,6 +22,7 @@ def simplify_properties():
 
     #remove invalid geometries
     properties = properties[properties.is_valid]
+    properties = properties[properties['StreetNumber'].notnull()]
 
     #utm zone 10n
     #properties = properties.to_crs(epsg=26910)
