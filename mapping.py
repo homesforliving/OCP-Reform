@@ -113,12 +113,19 @@ def map():
     properties['amenity_score'] = properties['amenity_score']/properties['amenity_score'].max()
     
     #transit_score is from 0 to 1. arbitrary weights
-    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']
+    properties['OCP Score'] = 0.4*properties['transit_score'] + 0.6*properties['amenity_score']
 
-    #normalize OCP score from 0 to 1
-    properties['OCP Score'] = 10*properties['OCP Score']/properties['OCP Score'].max()
+    #apply log scale
+    #properties['OCP Score'] = np.log(properties['OCP Score'])
+    #normalize OCP score from 0 to 10
+    properties['OCP Score'] = 1*properties['OCP Score']/properties['OCP Score'].max()
 
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
+    #apply np.ln(x+1) to OCP score
+    properties['OCP Score'] = np.log(properties['OCP Score']+1)
+
+    properties = properties[['geometry', 'AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']]
+
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='transit_score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
