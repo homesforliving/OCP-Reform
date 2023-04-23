@@ -59,14 +59,8 @@ def analyze():
     print("Calculating transit score...")
     properties = transit_score(properties)
 
-    properties['amenity_score'] = 0
-    properties['label'] = ""
-
     #reset index
     properties = properties.reset_index()
-
-    #import weights
-    weights = pd.read_csv('amenity weights.csv')
       
     for amenity in amenities:
         
@@ -74,7 +68,7 @@ def analyze():
         #category of amenity.category (see line 42)
         category = amenity.category[0]
         print("Performing join with " + category + "...")
-       
+
         buffered_properties = properties.copy()
         buffered_properties.geometry = properties.geometry.buffer(400)
 
@@ -92,54 +86,52 @@ def analyze():
 
         #replace NaN with 0
         properties[category] = properties[category].fillna(0)
-
-        #increment amenity score
-        w = weights[weights['amenity'] == category]['weight'].values[0]
-        properties.amenity_score =+ properties[category]*w
-        break
-    
-    print(properties)
-    return
-    properties.ocp_score = properties.transit_score*.4 + properties.amenity_score*.6
-            
-    def create_label(row):
-        label = ""
-        for amenity in amenities:
-            if(row[amenity.category[0]] > 0):
-                label = label + amenity.category[0] + ", "
-        if label != "":
-            label = label[:-2]
-        return label
-    
-    properties['label'] = properties.apply(create_label, axis=1)
-
-    #calculate ocp score
-    #these weights are arbitrary 
-    
         
-    print("Finished calculating amenities. Mapping...")
-
     properties = properties.to_crs('epsg:4326')
     properties.to_file("maps/analysis.geojson", driver='GeoJSON')
 
     return
     
-def map(properties):
-    properties['amenity_count'] = properties['amenity_count'].astype('int')
-    properties.amenity_count = np.log(properties.amenity_count)/np.log(100)
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='ocp_score',
+def map():
+    properties = gpd.read_file("maps/analysis.geojson")
+    
+    #import weights
+    weights = pd.read_csv('amenity weights.csv')
+
+    properties['amenity_score'] = 0
+
+    #for coloumns that aren't index, AddressCombined, transit_score, or geometry:
+    #multiply by weight
+    #add to amenity_score
+    for col in properties.columns:
+        if(col not in ['index', 'AddressCombined', 'transit_score', 'geometry','amenity_score']):
+            w = weights[weights['amenity'] == col]['weight'].values[0]
+            properties[col] = properties[col].astype(int)
+            properties['amenity_score'] = properties['amenity_score'] + w*properties[col]
+    
+    #normalize amenity score from 0 to 1
+    properties['amenity_score'] = properties['amenity_score']/properties['amenity_score'].max()
+    
+    #transit_score is from 0 to 1. arbitrary weights
+    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']
+
+    #normalize OCP score from 0 to 1
+    properties['OCP Score'] = 10*properties['OCP Score']/properties['OCP Score'].max()
+
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
-                                
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
                                 opacity=.5,
-                                hover_data = ['AddressCombined', 'label']
+                                hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']
                                 )
 
     fig.update_traces(marker_line_width=.01,
                             hovertemplate = """
-                            <b>%{customdata[0]}. Close to:</b><br> 
-                            %{customdata[1]}
+                            <b>%{customdata[0]}.</b><br> 
+                            <b>Amenity Score:</b> %{customdata[1]}<br>
+                            <b>Transit Score:</b> %{customdata[2]}<br>
+                            <b>OCP Score:</b> %{customdata[3]}<br>
                             """
                     )
     #zero margin
@@ -150,5 +142,6 @@ def map(properties):
     
     return
 
-analyze()
-#map(gpd.read_file("maps/analysis.geojson"))
+#analyze()
+map()
+
