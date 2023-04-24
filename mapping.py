@@ -63,31 +63,23 @@ def analyze():
     properties = properties.reset_index()
       
     for amenity in amenities:
-        
-        #amenity is a gdf of amenities of a certain type (e.g. restarants)
-        #category of amenity.category (see line 42)
-        category = amenity.category[0]
-        print("Performing join with " + category + "...")
+        category = amenity['category'][0]
+        properties[category] = 0
 
-        buffered_properties = properties.copy()
-        buffered_properties.geometry = properties.geometry.buffer(400)
+        buffer = gpd.GeoDataFrame(geometry=amenity.buffer(800,resolution=1))
 
-        # Perform spatial join
-        joined = gpd.sjoin(buffered_properties, amenity, predicate='contains')
+        # Perform a spatial join operation between the two datasets
+        properties_within_buffer = gpd.sjoin(properties, buffer, predicate='intersects')
 
-        # Group by property (AddressCombined) and count the number of amenities and put this count for each property in a new column
-        grouped = joined.groupby('AddressCombined').count()[['category']]
+        # Create a new column called category and assign a value of 1 to all rows
+        properties_within_buffer[category] = 1
 
-        # Merge with properties
-        properties = properties.merge(grouped, how='left', on='AddressCombined')
+        # Update the 'amenity' column in the original properties dataset for the properties within the buffer
+        properties.loc[properties_within_buffer.index, category] = 1
 
-        #rename category column name to category
-        properties = properties.rename(columns={'category':category})
+        print("Analyzed {}. {} amenities in dataset, {} properties within 800m buffer.".format(category, len(amenity), len(properties_within_buffer)))  
 
-        #replace NaN with 0
-        properties[category] = properties[category].fillna(0)
-        
-    properties = properties.to_crs('epsg:4326')
+    properties.to_crs('epsg:4326')       
     properties.to_file("maps/analysis.geojson", driver='GeoJSON')
 
     return
@@ -103,6 +95,7 @@ def map():
     #for coloumns that aren't index, AddressCombined, transit_score, or geometry:
     #multiply by weight
     #add to amenity_score
+    properties = properties.to_crs('epsg:4326')
     for col in properties.columns:
         if(col not in ['index', 'AddressCombined', 'transit_score', 'geometry','amenity_score']):
             w = weights[weights['amenity'] == col]['weight'].values[0]
@@ -113,19 +106,11 @@ def map():
     properties['amenity_score'] = properties['amenity_score']/properties['amenity_score'].max()
     
     #transit_score is from 0 to 1. arbitrary weights
-    properties['OCP Score'] = 0.4*properties['transit_score'] + 0.6*properties['amenity_score']
-
-    #apply log scale
-    #properties['OCP Score'] = np.log(properties['OCP Score'])
-    #normalize OCP score from 0 to 10
-    properties['OCP Score'] = 1*properties['OCP Score']/properties['OCP Score'].max()
-
-    #apply np.ln(x+1) to OCP score
-    properties['OCP Score'] = np.log(properties['OCP Score']+1)
+    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']  
 
     properties = properties[['geometry', 'AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']]
 
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='transit_score',
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
@@ -149,6 +134,6 @@ def map():
     
     return
 
-#analyze()
+analyze()
 map()
 

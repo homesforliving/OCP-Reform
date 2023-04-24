@@ -82,4 +82,5 @@ def transit_score(properties):
     #result.plot(column='weekly_buses', legend=True)
     #plt.show()
 
+    print("Finished transit score")
     return(result)

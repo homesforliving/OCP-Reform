@@ -1,65 +1,55 @@
-import os
-import pandas as pd
-import geopandas as gpd
-import googlemaps
+
+
+import osmnx as ox
 import matplotlib.pyplot as plt
-import plotly
-import plotly.express as px
-import time
 
-#chart studio
-import chart_studio
-import chart_studio.plotly as py
-import plotly.io as pio
+from pathlib import Path
+import pandas as pd
 
-from inspect import getsourcefile
-from os.path import abspath
-#set active directory to file location
-directory = abspath(getsourcefile(lambda:0))
-#check if system uses forward or backslashes for writing directories
-if(directory.rfind("/") != -1):
-    newDirectory = directory[:(directory.rfind("/")+1)]
-else:
-    newDirectory = directory[:(directory.rfind("\\")+1)]
-os.chdir(newDirectory)
+AMENITY_QUERIES = [
+    ("bank", {"amenity": "bank"}),
+    ("bar", {"amenity": ["bar", "pub"]}),
+    ("coffee shop", {"amenity": "cafe", "cuisine": "coffee_shop"}),
+    (
+        "greater victoria public library",
+        {"operator": "Greater Victoria Public Library"},
+    ),
+    ("medical clinic", {"amenity": "clinic"}),
+    ("school", {"amenity": "school"}),
+    (
+        "store",
+        {
+            "shop": ["supermarket", "greengrocer", "convenience"],
+            "name": ["Walmart", "Wholesale Club"],
+        },
+    ),
+]
+COL_REGEX = r"^(name|brand|geometry|(addr:\w+))$"
 
-amenities = gpd.read_file("osm_data/OSM_export_victoria.geojson")
+if __name__ == "__main__":
+    data_dir = Path("amenity data")
+    data_dir.mkdir(exist_ok=True)
 
-#convert to WGS 84
-amenities = amenities.to_crs('epsg:4326')
+    for amenity, query in AMENITY_QUERIES:
+        places = ox.geometries_from_place("Greater Victoria", query)
+        places = places.filter(regex=COL_REGEX)
 
-#only need centroid, not polygon
-amenities["geometry"] = amenities["geometry"].centroid
-
-print("UNIQUE AMENITIES:")
-print(amenities.amenity.unique())
-
-for amenity in amenities.amenity.unique():
-    #if not NaN:
-    if(amenity == amenity):
-
-        print("Collecting data for " + str(amenity))
-
-        gdf = amenities[amenities["amenity"] == amenity]
+        #turn places into a pandas df with column Latitude and Longitude
+        #to nad 83 utm 10n
         
-        #create a new gdf with: name, geometry = geometry centroid
-        gdf = gdf[["name", "geometry"]]
+        places = places.to_crs("EPSG:26910")
+        places['geometry'] = places['geometry'].centroid
+        places = places.to_crs("EPSG:4326")
+        places["Latitude"] = places["geometry"].y
+        places["Longitude"] = places["geometry"].x
 
-        #create pd df with columns: Name, Latitude, Longitude
-        df = pd.DataFrame(columns=["Name", "Latitude", "Longitude"])
+        #drop geometry column
+        places = places[['name', 'Latitude', 'Longitude']]
 
-        df["Name"] = gdf["name"]
-        df["Latitude"] = gdf["geometry"].y
-        df["Longitude"] = gdf["geometry"].x
+        places.to_csv(data_dir / f"{amenity}.csv", index=False)
 
-        #to csv
-        df.to_csv("amenity data/" + amenity + ".csv", index=False)
-
-    #create new df with two columns: list of unique amenities that aren't NaN, and the number 1
-    weights = pd.DataFrame(columns=["amenity", "weight"])
-    weights["amenity"] = amenities.amenity.unique()
-    weights["weight"] = 1
-
-    #to csv
-    weights.to_csv("amenity weights.csv", index=False)
-    
+    #create new empty df with 'amenity' and 'weight'
+    weights = pd.DataFrame(columns=['amenity', 'weight'])
+    weights.amenity = [amenity for amenity, _ in AMENITY_QUERIES]
+    weights.weight = 1
+    weights.to_csv('amenity weights.csv', index=False)
