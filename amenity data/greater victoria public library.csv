@@ -1,8 +1,10 @@
-Name,Latitude,Longitude,Address
-Greater Victoria Public Library - Central Branch,48.42343839999999,-123.3642509,"735 Broughton St, Victoria"
-Greater Victoria Public Library - Oak Bay Branch,48.4255536,-123.3150645,"1442 Monterey Ave, Victoria"
-Greater Victoria Public Library James Bay Branch,48.4178201,-123.3723267,"385 Menzies St, Victoria"
-Greater Victoria Public Library - Esquimalt Branch,48.4296032,-123.4142706,"503 Park Pl #101, Victoria"
-Greater Victoria Public Library - Emily Carr Branch,48.4558696,-123.373897,"3521 Blanshard St #101, Victoria"
-Greater Victoria Public Library - Saanich Centennial Branch,48.45385109999999,-123.398644,"3110 Tillicum Rd, Victoria"
-Greater Victoria Public Library - Nellie McClung Branch,48.4682313,-123.3359823,"Nellie McClung Branch, 3950 Cedar Hill Rd, Victoria"
+name,Latitude,Longitude
+Central Library,48.423046600000006,-123.36418740000002
+Oak Bay Branch,48.425561600000016,-123.31508210000001
+Saanich Centennial Library Branch,48.45387399999999,-123.39881089999999
+Greater Victoria Public Library - Esquimalt Branch,48.42967519999999,-123.4143124
+Emily Carr Branch,48.4558082,-123.3739371
+Langford Heritage Branch,48.4456444,-123.53356530000002
+sxʷeŋxʷəŋ təŋəxʷ James Bay Branch,48.417827100000004,-123.37230040000001
+Juan de Fuca Library,48.44785593268591,-123.46466466269062
+Nellie McClung Branch,48.46822299177481,-123.33594095591017

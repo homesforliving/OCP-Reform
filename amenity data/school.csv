@@ -1,41 +1,116 @@
-Name,Latitude,Longitude,Address
-Lampson School,48.4323876,-123.4048672,"670 Lampson St, Victoria"
-Tillicum Elementary School,48.4522164,-123.3930838,"3155 Albina St, Victoria"
-Victor School,48.4322879,-123.3374749,"2260 Victor St, Victoria"
-Victoria School for Ideal Education,48.440409,-123.339365,"2820 Belmont Ave, Victoria"
-École Marigold Elementary School,48.461707,-123.4093549,"3751 Grange Rd, Victoria"
-Victoria West Elementary School,48.4343173,-123.3880084,"750 Front St, Victoria"
-Spectrum Community School,48.4630461,-123.4078938,"957 Burnside Rd W, Saanich"
-St. Michaels University School - Junior School Campus,48.4180419,-123.3182505,"820 Victoria Ave, Victoria"
-Esquimalt High School,48.4382514,-123.396515,"847 Colville Rd, Victoria"
-Quadra Elementary School,48.4461785,-123.3606194,"3031 Quadra St, Victoria"
-Monterey Middle School,48.4182607,-123.3146625,"851 Monterey Ave, Victoria"
-Sir James Douglas Elementary,48.415467,-123.3485322,"401 Moss St, Victoria"
-École Macaulay Elementary School,48.4253509,-123.4058086,"1010 Wychbury Ave, Victoria"
-James Bay Community School,48.4170807,-123.3796244,"140 Oswego St, Victoria"
-École Intermédiaire Lansdowne Middle School,48.4457457,-123.3281403,"1765 Lansdowne Rd, Victoria"
-Campus View Elementary School,48.4658045,-123.321252,"3900 Gordon Head Rd, Victoria"
-Oaklands Elementary School,48.4410714,-123.3388397,"2827 Belmont Avenue, Victoria"
-Cloverdale Traditional Elementary School,48.4538446,-123.3594188,"3427 Quadra St, Victoria"
-École Willows Elementary,48.435784,-123.3100887,"2290 Musgrave St, Victoria"
-Lansdowne Middle School South Campus,48.4402513,-123.3284737,"2780 Richmond Rd, Victoria"
-Vancouver Island School of Innovation and Inquiry,48.4398105,-123.3500466,"1307 Hillside Ave, Victoria"
-Rockheights Middle School,48.4347485,-123.4108953,"1250 Highrock Ave, Victoria"
-Colquitz Middle School,48.4606617,-123.3930223,"505 Dumeresq St, Victoria"
-Esquimalt High School Library,48.4385947,-123.4097334,"4N9, 847 Colville Rd, Victoria"
-École Intermediaire Cedar Hill Middle,48.4661363,-123.3372596,"3910 Cedar Hill Rd, Victoria"
-Glenlyon Norfolk School – Junior School,48.4287777,-123.3073383,"1701 Beach Dr, Victoria"
-South Park Family School,48.4177378,-123.3661835,"508 Douglas St, Victoria"
-McKenzie Elementary,48.46714739999999,-123.3919264,"4005 Raymond St N, Victoria"
-École Intermédiaire Central Middle School,48.4240912,-123.3468024,"1280 Fort St, Victoria"
-Victoria High School,48.4416056,-123.3626897,"923 Topaz Ave, Victoria"
-École Élémentaire Doncaster Elementary,48.45685580000001,-123.3384377,"1525 Rowan St, Victoria"
-Frank Hobbs Elementary,48.4651067,-123.3004904,"3875 Haro Rd, Victoria"
-St. Joseph’s Elementary School,48.4618468,-123.4038261,"757 Burnside Rd W, Victoria"
-Margaret Jenkins Elementary,48.4161716,-123.3295146,"1824 Fairfield Rd, Victoria"
-Victoria High School,48.4296903,-123.3465812,"1260 Grant St, Victoria"
-Braefoot Elementary School,48.4696218,-123.3445854,"1440 Harrop Rd, Victoria"
-George Jay Elementary,48.4329099,-123.3512873,"1118 Princess Ave, Victoria"
-Pacific School of Innovation and Inquiry,48.422594,-123.36619,"808 Douglas St #100, Victoria"
-Arbutus Global Middle School,48.4710177,-123.3073251,"2306 Edgelow St, Victoria"
-Selkirk Montessori School,48.4409313,-123.3782572,"2970 Jutland Rd, Victoria"
+name,Latitude,Longitude
+Global Village English Centres,48.4262422,-123.36642450000001
+Con Brio Music,48.4115826,-123.3500801
+St Margaret's School,48.4802589,-123.36445620000002
+Victoria Conservatory of Music,48.4457316,-123.5337542
+Canadian College of Performing Arts,48.42786749999999,-123.31891670000002
+Willows Elementary,48.436058693976214,-123.31107375438982
+Oak Bay High School,48.43184914744322,-123.31789180234705
+Victoria High School,48.42962173915557,-123.34725669222475
+Central Middle School,48.42397790810911,-123.34756008514356
+Campus View Elementary,48.4659087227006,-123.32209973882061
+Frank Hobbs Elementary School,48.46509418577968,-123.29958915702662
+Arbutus Middle School,48.47099468840084,-123.30634387381394
+Maria Montessori Academy,48.47345235895394,-123.31855409805694
+Cedar Hill Middle School,48.46657249348359,-123.33721350825293
+Oaklands Elementary,48.440921011429936,-123.33810068845364
+Quadra Elementary,48.44575846897476,-123.3599417534656
+Lansdowne Middle School - North Campus,48.444918872711234,-123.32966686171368
+Lansdowne Middle School - South Campus,48.43969805542186,-123.32937461768158
+St. Michaels University School,48.451662140332985,-123.32815480986038
+Torquay Elementary,48.48638516222884,-123.3229790639372
+Sir James Douglas Elementary,48.415617397111085,-123.34786097221361
+St. Patrick's School,48.4337381909692,-123.32414548167024
+Doncaster Elementary School,48.45640266736709,-123.33727599291595
+Braefoot Elementary School,48.47016096674042,-123.34536161575693
+John Stubbs Memorial School,48.43612241697605,-123.46403799678654
+David Cameron Elementary,48.44272327469117,-123.49694422743312
+Cloverdale Traditional School,48.45387399335194,-123.35906407729992
+George Jay Elementary,48.43307868941313,-123.35100212516694
+Hillcrest Elementary,48.48485671364108,-123.31294549078656
+James Bay Community School,48.41694577052891,-123.37969559991834
+Lake Hill Elementary,48.478384311248895,-123.36552954810696
+Margaret Jenkins Elementary,48.41616405683099,-123.32896297862429
+Ecole Marigold Elementary,48.462219851634536,-123.40933296206761
+Spectrum Community School,48.462463022642396,-123.40642937771284
+McKenzie Elementary School,48.46751535785364,-123.39091482800308
+Northridge Elementary School,48.480523905092255,-123.40221563449103
+Rogers Elementary,48.474400133919545,-123.38118018916394
+Strawberry Vale Elementary,48.47810112260262,-123.41737490654272
+Sundance-Bank Elementary,48.42778819758523,-123.32822865112624
+Victoria West Elementary,48.43444012651594,-123.38820617647991
+Colquitz Middle School,48.46009683173742,-123.393029286452
+Glanford Middle School,48.476285094576625,-123.39220596501505
+Gordon Head Middle School,48.48153740630296,-123.32929366226608
+Monterey Middle School,48.41852813274668,-123.31399258959341
+Lambrick Park Secondary,48.47943746413603,-123.33013651476435
+Reynolds Secondary,48.4688224071071,-123.35939854427887
+S.J. Willis Alternative School,48.440805502671026,-123.36256272005836
+Victor School,48.43210990094054,-123.33773858402574
+Lakewood Elementary,48.46598808650826,-123.50704572781358
+Willway Elementary,48.4569871959332,-123.54850378828662
+Deep Cove Elementary,48.68006628632892,-123.45645710711764
+Sidney Elementary School,48.65205665092761,-123.40490076967393
+Kelset Elementary,48.62580609745378,-123.42179424049704
+Keating Elementary,48.5679858364836,-123.40220505746456
+Cordova Bay Elementary,48.527427706697445,-123.37006399474612
+Prospect Lake Elementary,48.52283075994295,-123.43408975089473
+Lochside Elementary,48.500672580565336,-123.35982859341232
+Bayside Middle School,48.56940551252868,-123.45362203823495
+Royal Oak Middle School,48.49467409411413,-123.39160395514013
+South Island Distance Education School,48.496742995140586,-123.39411163119217
+Parkland Secondary,48.67044561731803,-123.42155891130895
+Stelly's Secondary,48.577799149683294,-123.43196564867768
+SMUS Middle School,48.45181359865062,-123.32994460722432
+School House,48.45212290795239,-123.32851362477828
+Arts Calibre Academy,48.48018155727854,-123.32222162511268
+Selkirk Montessori School,48.44088199767379,-123.37840148981674
+,48.471929460157575,-123.3840197165109
+Pacific Christian School,48.473236472654655,-123.38436674562621
+Hans Helgesen Elementary,48.36410807220143,-123.55463812386712
+John Muir Elementary,48.370759352323624,-123.74963875440827
+Wishart Elementary,48.42214584693576,-123.49506647552637
+Dunsmuir Middle School,48.4184152746098,-123.48620639261445
+Glenlyon Norfolk School - Beach Drive Campus,48.428509923587825,-123.30740432755546
+St. Michaels University School - Junior School,48.41793000592782,-123.31903007483366
+Victoria International High School - Uplands Campus,48.45336787234783,-123.31311456428008
+Play Field - Glenlyon Norfolk School - Beach Drive Campus,48.42923241981675,-123.30907912878497
+Glenlyon Norfolk School - Pemberton Woods Campus,48.42032507538883,-123.33014075062559
+Vancouver Island School of Art,48.43656057144171,-123.35795446303013
+St. Joseph's Elementary School,48.461454000325865,-123.4043259389409
+Sooke Elementary,48.38054365260086,-123.71673269304792
+,48.43243393146753,-123.40518566068405
+Ècole Macaulay Elementary School,48.42602597966553,-123.40568701632363
+Ècole Victor–Brodeur,48.432134857195024,-123.40121978235184
+Rockheights Middle School,48.43526014341718,-123.41171307432322
+,48.438094758697396,-123.3982619409248
+,48.4749978346339,-123.41357040777271
+,48.475440579516906,-123.41311314987936
+Beaver Lake Campus,48.50646528927617,-123.4095362034799
+,48.47023717631584,-123.37465232402946
+South Park Family School,48.41768529690833,-123.36639256374805
+Crystal View Elementary,48.45298823414196,-123.47787406543787
+Spencer Middle School,48.45052394175812,-123.51437759557233
+Ruth King Elementary,48.452019138908234,-123.5055942420172
+Belmont Secondary School,48.44244474248195,-123.52965223887907
+Happy Valley Elementary,48.42842255269373,-123.5287907587064
+Savory Elementary,48.44857073966526,-123.4855808988643
+Colwood Elementary,48.436134256470986,-123.48585026300971
+Sangster Elementary,48.421113704573614,-123.48500074909946
+Eagle View Elementary,48.466248817331376,-123.44266091996731
+Shoreline Community Middle School,48.453191745984896,-123.42746257198428
+View Royal Elementary,48.45676888461909,-123.43613279686022
+Craigflower Elementary,48.453513768657814,-123.42144955872716
+Tillicum Elementary School,48.45208588418991,-123.39298680906478
+Journey Middle School,48.38701202996578,-123.71692796037803
+Poirier Elementary School,48.39013516933008,-123.71803160168064
+Saseenos Elementary,48.387801806631494,-123.68866435563265
+Edward Milne Community School,48.38875241659208,-123.69563662445701
+Royal Bay Secondary School,48.40927522148636,-123.49279285919103
+Millstream Elementary,48.46582909500369,-123.496020048746
+West-Mont Montessori School,48.38995892936354,-123.52319853322908
+"ȽÁU, WELṈEW̱ Tribal School",48.58501759922892,-123.45665872758144
+Mount Douglas Secondary School,48.47139071804608,-123.31940216798475
+Brentwood Elementary,48.574032951041595,-123.44695211135684
+Claremont Secondary School,48.516478495803014,-123.37568546712208
+North Saanich Middle School,48.66550226682322,-123.41831727635399

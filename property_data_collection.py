@@ -27,7 +27,15 @@ property_exclude_list = [
 #also: properties data shows small boxes for apartments, condos, etc.
 #this function simplifies the shapefile and combines them all to reduce processing needs
 def simplify_properties():
-    properties = gpd.read_file("cov properties/cov properties.geojson")
+
+    properties = gpd.read_file("cov properties/CRD_Properties.geojson")
+
+    #download here: https://hub.arcgis.com/maps/SIPP::crd-properties/explore?location=48.617052%2C-123.762900%2C10.11
+    #(file too large for github)
+
+    #filter to just core municipalities
+    munis = ['VC','OB','SN','ES','VR']
+    properties = properties[properties['City'].isin(munis)]
 
     #remove invalid geometries
     properties = properties[properties.is_valid]
@@ -55,7 +63,7 @@ def simplify_properties():
     print('Number of rows: ' + str(len(properties.index)))
 
     #to geojson
-    properties.to_file("cov properties/cov properties dissolved.geojson", driver='GeoJSON')
+    properties.to_file("cov properties/core muni properties dissolved.geojson", driver='GeoJSON')
 
     properties.plot()
     plt.show()

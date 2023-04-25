@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import geopandas as gpd
 import googlemaps
 import matplotlib.pyplot as plt
@@ -16,6 +17,8 @@ import matplotlib.pyplot as plt
 from inspect import getsourcefile
 from os.path import abspath
 
+from transit_score import transit_score
+
 #set active directory to file location
 directory = abspath(getsourcefile(lambda:0))
 #check if system uses forward or backslashes for writing directories
@@ -25,11 +28,9 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
-transit_routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
-
 def analyze():
     #list of geodataframes - each one is a different amenity
-    ammenities = []
+    amenities = []
     
     #import ammenities: bus stops, grocery stores, hospitals, etc.  
     #list of files in 'amenity data'
@@ -38,22 +39,14 @@ def analyze():
         df = pd.read_csv('amenity data/'+file)
         #convert to gdf using Latitude	Longitude
         gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude))
-        gdf['amenity'] = file[:-4]
+        gdf['category'] = file[:-4]
         #wgs84 is the standard lat/long coordinate system
         gdf.crs = 'epsg:4326'
         #convert to NAD UTM 10N
         gdf = gdf.to_crs('epsg:26910')
-        ammenities.append(gdf)
+        amenities.append(gdf)
 
-    #stops is a geodataframe of all bus stops
-    stops = gpd.GeoDataFrame()
-
-    for route in transit_routes:
-        stops = gpd.GeoDataFrame(pd.concat([stops,gpd.read_file("transit data/filtered stops/route {} stops.shp".format(route))]))
-
-    stops = stops.to_crs('epsg:26910')
-
-    properties = gpd.read_file("cov properties/cov properties dissolved.geojson")
+    properties = gpd.read_file("cov properties/core muni properties dissolved.geojson")
     #drop all columns except geometry and AddressCombined
     properties = properties[['geometry', 'AddressCombined']]
 
@@ -62,63 +55,75 @@ def analyze():
     #check for invalid geometries
     properties = properties[properties.is_valid]
 
-    #buffer stops by 400m
-    transit_buffer = stops.buffer(400, resolution = 1)
-    amenity_buffers = []
-    for amenity in ammenities:
-        amenity_buffers.append({'type': amenity.loc[0,'amenity'], 'buffer': gpd.GeoDataFrame(geometry=amenity.buffer(800, resolution=1))})
-        print("Imported {} data".format(amenity.loc[0,'amenity']))
-
-    print("Finished importing amenity data")
-    #find properties within transit buffer
-    properties = properties[properties.intersects(transit_buffer.unary_union)]
-
-    print("Imported property data")
-    properties['amenity_count'] = 0
-    properties['label'] = ""
+    #calculate transit score
+    print("Calculating transit score...")
+    properties = transit_score(properties)
 
     #reset index
     properties = properties.reset_index()
       
-    for amenity in amenity_buffers:
-        properties_within_buffer = gpd.sjoin(properties, amenity['buffer'], predicate='intersects')
+    for amenity in amenities:
+        category = amenity['category'][0]
+        properties[category] = 0
 
-        # Increment the 'counter' column for points within the buffer
-        properties.loc[properties_within_buffer.index, 'amenity_count'] += 1
-        properties.loc[properties_within_buffer.index, 'label'] += amenity['type'] + ", "
-    
-    def fix_label(l):
-        if l[-2:] == ", ":
-            return l[:-2]
-        else:
-            return l
-    
-    properties['label'] = properties['label'].apply(fix_label)
-        
+        buffer = gpd.GeoDataFrame(geometry=amenity.buffer(800,resolution=1))
 
-        
-    print("Finished calculating amenities. Mapping...")
+        # Perform a spatial join operation between the two datasets
+        properties_within_buffer = gpd.sjoin(properties, buffer, predicate='intersects')
 
-    properties = properties.to_crs('epsg:4326')
+        # Create a new column called category and assign a value of 1 to all rows
+        properties_within_buffer[category] = 1
+
+        # Update the 'amenity' column in the original properties dataset for the properties within the buffer
+        properties.loc[properties_within_buffer.index, category] = 1
+
+        print("Analyzed {}. {} amenities in dataset, {} properties within 800m buffer.".format(category, len(amenity), len(properties_within_buffer)))  
+
+    properties.to_crs('epsg:4326')       
     properties.to_file("maps/analysis.geojson", driver='GeoJSON')
 
     return
     
-def map(properties):
-    properties['amenity_count'] = properties['amenity_count'].astype('int')
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_count',
+def map():
+    properties = gpd.read_file("maps/analysis.geojson")
+    
+    #import weights
+    weights = pd.read_csv('amenity weights.csv')
+
+    properties['amenity_score'] = 0
+
+    #for coloumns that aren't index, AddressCombined, transit_score, or geometry:
+    #multiply by weight
+    #add to amenity_score
+    properties = properties.to_crs('epsg:4326')
+    for col in properties.columns:
+        if(col not in ['index', 'AddressCombined', 'transit_score', 'geometry','amenity_score']):
+            w = weights[weights['amenity'] == col]['weight'].values[0]
+            properties[col] = properties[col].astype(int)
+            properties['amenity_score'] = properties['amenity_score'] + w*properties[col]
+    
+    #normalize amenity score from 0 to 1
+    properties['amenity_score'] = properties['amenity_score']/properties['amenity_score'].max()
+    
+    #transit_score is from 0 to 1. arbitrary weights
+    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']  
+
+    properties = properties[['geometry', 'AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']]
+
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
-                                
                                 zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
                                 opacity=.5,
-                                hover_data = ['AddressCombined', 'label']
+                                hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']
                                 )
 
     fig.update_traces(marker_line_width=.01,
                             hovertemplate = """
-                            <b>%{customdata[0]}. Close to:</b><br> 
-                            %{customdata[1]}
+                            <b>%{customdata[0]}.</b><br> 
+                            <b>Amenity Score:</b> %{customdata[1]}<br>
+                            <b>Transit Score:</b> %{customdata[2]}<br>
+                            <b>OCP Score:</b> %{customdata[3]}<br>
                             """
                     )
     #zero margin
@@ -129,5 +134,6 @@ def map(properties):
     
     return
 
-#analyze()
-map(gpd.read_file("maps/analysis.geojson"))
+analyze()
+map()
+

@@ -1,2 +1,3 @@
 .venv
-
+cache/
+cov properties/CRD_Properties.geojson
