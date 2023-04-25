@@ -16,7 +16,7 @@ os.chdir(newDirectory)
 
 # property_exclude_list is a list of properties that should not be included in
 # in the output.
-# Street naems should be all uppercase.
+# Street names should be all uppercase.
 property_exclude_list = [
     '100 COOK', # Beacon Hill Park
     '1495 FAIRFIELD', # Ross Bay Cemetery

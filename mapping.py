@@ -98,6 +98,7 @@ def map():
     properties = properties.to_crs('epsg:4326')
     for col in properties.columns:
         if(col not in ['index', 'AddressCombined', 'transit_score', 'geometry','amenity_score']):
+            print(col)
             w = weights[weights['amenity'] == col]['weight'].values[0]
             properties[col] = properties[col].astype(int)
             properties['amenity_score'] = properties['amenity_score'] + w*properties[col]
