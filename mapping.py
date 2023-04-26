@@ -83,9 +83,8 @@ def analyze():
     properties.to_file("maps/analysis.geojson", driver='GeoJSON')
 
     return
-    
-def map():
-    properties = gpd.read_file("maps/analysis.geojson")
+
+def aggregate_amenities(properties):
     
     #import weights
     weights = pd.read_csv('amenity weights.csv')
@@ -111,6 +110,14 @@ def map():
 
     properties = properties[['geometry', 'AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']]
 
+    return(properties)
+
+
+def map_main():
+    properties = gpd.read_file("maps/analysis.geojson")
+    
+    properties = aggregate_amenities(properties)
+
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
                                 color_continuous_scale="cividis",
                                 mapbox_style="carto-darkmatter",
@@ -135,6 +142,48 @@ def map():
     
     return
 
-analyze()
-map()
+def map_top_50():
+    properties = gpd.read_file("maps/analysis.geojson")
 
+    properties = aggregate_amenities(properties)
+
+    #select properties with OCP score >= .5
+    properties = properties[properties['OCP Score'] >= .5]
+
+    #import zoning data
+    zoning = gpd.read_file('zoning/Harmonized_Zones.shp')
+    zoning = zoning.to_crs('epsg:4326')
+
+    #perform spatial join. Find zoning for each property, create 'zone' column in properties with zoning.
+    #zoning has a 'SIMPLIFIED' column. This is the zoning type.
+    properties = gpd.sjoin(properties, zoning, predicate='intersects')
+    properties = properties[properties['SIMPLIFIED'] == 'Single/Duplex']
+
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
+                                color_continuous_scale="cividis",
+                                mapbox_style="carto-darkmatter",
+                                zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
+                                opacity=.5,
+                                #SET min max of the colour bar
+                                range_color=[0,1],
+                                hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score', 'SIMPLIFIED']
+                                )
+
+    fig.update_traces(marker_line_width=.01,
+                            hovertemplate = """
+                            <b>%{customdata[0]}.</b><br> 
+                            <b>Amenity Score:</b> %{customdata[1]}<br>
+                            <b>Transit Score:</b> %{customdata[2]}<br>
+                            <b>OCP Score:</b> %{customdata[3]}<br>
+                            <b>Zoning:</b> %{customdata[4]}<br>
+                            """
+                    )
+    #zero margin
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    #to html
+    fig.write_html("maps/analysis_top_50.html")
+
+#analyze()
+#map()
+
+map_top_50()
