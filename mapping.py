@@ -106,7 +106,7 @@ def aggregate_amenities(properties):
     properties['amenity_score'] = properties['amenity_score']/properties['amenity_score'].max()
     
     #transit_score is from 0 to 1. arbitrary weights
-    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']  
+    properties['OCP Score'] = 0.5*properties['transit_score'] + 0.5*properties['amenity_score']
 
     properties = properties[['geometry', 'AddressCombined', 'amenity_score', 'transit_score', 'OCP Score']]
 
@@ -117,6 +117,11 @@ def map_main():
     properties = gpd.read_file("maps/analysis.geojson")
     
     properties = aggregate_amenities(properties)
+
+    #multiply by 100 and then round to an integer using round()
+    properties['amenity_score'] = round(100*properties['amenity_score'])
+    properties['transit_score'] = round(100*properties['transit_score'])
+    properties['OCP Score'] = round(100*properties['OCP Score'])
 
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='OCP Score',
                                 color_continuous_scale="cividis",
@@ -133,10 +138,20 @@ def map_main():
                             <b>Transit Score:</b> %{customdata[2]}<br>
                             <b>OCP Score:</b> %{customdata[3]}<br>
                             """
+                        
                     )
-    #zero margin
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    #to html
+    
+   # set color bar title and labels
+    colorbar = dict(
+    title = 'OCP Score',
+    tickmode='array',
+    tickvals=[properties['OCP Score'].min(), 100],
+    ticktext=['Amenity-poor', 'Amenity-rich']
+    )
+
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
+                  coloraxis_colorbar=colorbar
+                  )
     fig.write_html("maps/analysis.html")
     
     
@@ -184,6 +199,5 @@ def map_top_50():
     fig.write_html("maps/analysis_top_50.html")
 
 #analyze()
-#map()
+map_main()
 
-map_top_50()
