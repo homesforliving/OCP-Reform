@@ -25,3 +25,5 @@ From scratch, what you'll need to do is:
 - Run `osm_analyzer.py`
 - Run `create_property_scores()` in `OCP_score_generation.py`
 - Run `mapping.py`, where you can change the maps, proposed zoning, etc.
+
+In reality, the outputs of the first 4 bullets are already stored here in Github. So if you're only interested in tweaking the mapping, just run `mapping.py`
