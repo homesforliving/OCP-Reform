@@ -26,4 +26,13 @@ From scratch, what you'll need to do is:
 - Run `create_property_scores()` in `OCP_score_generation.py`
 - Run `mapping.py`, where you can change the maps, proposed zoning, etc.
 
-In reality, the outputs of the first 4 bullets are already stored here in Github. So if you're only interested in tweaking the mapping, just run `mapping.py`
+In reality, the outputs of the first 4 bullets are already stored here in Github. So if you're only interested in tweaking the mapping, just run `mapping.py`.
+
+## Data sources
+CRD Properties: https://hub.arcgis.com/datasets/SIPP::crd-properties/explore?layer=3&location=48.440229%2C-123.278142%2C13.00
+
+Major roads: https://hub.arcgis.com/datasets/SIPP::crd-roads/explore?layer=10&location=48.450182%2C-123.318805%2C12.86
+
+Highways: https://hub.arcgis.com/datasets/SIPP::crd-roads/explore?layer=7&location=48.617731%2C-123.762900%2C12.86
+
+Zoning: https://github.com/homesforliving/mapping
