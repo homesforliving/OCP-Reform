@@ -31,8 +31,8 @@ def apply_score_and_zoning():
     properties = aggregate_amenities(properties)
     properties = properties.to_crs("epsg:26910")
 
-    major_roads = gpd.read_file('roads/CRD Major Roads.geojson').to_crs('epsg:26910')
-    highways = gpd.read_file('roads/CRD Highways.geojson').to_crs('epsg:26910')
+    major_roads = gpd.read_file('Roads/CRD Major Roads.geojson').to_crs('epsg:26910')
+    highways = gpd.read_file('Roads/CRD Highways.geojson').to_crs('epsg:26910')
 
     #combine the two geometries into a blank geodataframe
     roads = gpd.GeoDataFrame(geometry = pd.concat([major_roads.geometry, highways.geometry], ignore_index=True))
@@ -147,7 +147,7 @@ def map_amenity_score(properties):
     title = 'Amenity Score',
     tickmode='array',
     tickvals=[properties['amenity_score'].min(), 100],
-    ticktext=['Amenity-Rich','Amenity-Poor'],
+    ticktext=['Amenity-Poor','Amenity-Rich'],
 
     )
 
@@ -180,9 +180,9 @@ def map_amenity_score(properties):
 
 def map_transit_score(properties):
 
-    transit_route_shps = gpd.read_file("Transit data/google_transit/shapes.csv")
-    trips = gpd.read_file("Transit data/google_transit/trips.csv")
-    routes = gpd.read_file("Transit data/google_transit/routes.csv")
+    transit_route_shps = gpd.read_file("transit data/google_transit/shapes.csv")
+    trips = gpd.read_file("transit data/google_transit/trips.csv")
+    routes = gpd.read_file("transit data/google_transit/routes.csv")
 
     #correlate shape_id with route_id
     transit_route_shps = transit_route_shps.merge(trips[['route_id', 'shape_id']], on = 'shape_id')

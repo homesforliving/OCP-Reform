@@ -20,9 +20,9 @@ os.chdir(newDirectory)
 #scores transit access from 0 to 1 for each property in properties
 #score is scaled logarithmically, I mapped it and it looked fine. definitely is something to improve on though
 def transit_score(properties):
-    stops = pd.read_csv("Transit data/google_transit/stops.csv")
+    stops = pd.read_csv("transit data/google_transit/stops.csv")
 
-    stop_times = pd.read_csv("Transit data/google_transit/stop_times.csv")
+    stop_times = pd.read_csv("transit data/google_transit/stop_times.csv")
 
     def fix_hour(hour_str):
         x = hour_str.find(':')

@@ -53,8 +53,8 @@ def update_static(url='http://victoria.mapstrat.com/current/google_transit.zip',
     return
 
 def filter_stops_by_routes(routes): #input a route. Creates a shapefile containing points representing each stop served by the route. **Includes stops served by route variants, e.x. 7N
-    stop_times = pd.read_csv('Transit data/google_transit/stop_times.csv')
-    stops = pd.read_csv('Transit data/google_transit/stops.csv')
+    stop_times = pd.read_csv('transit data/google_transit/stop_times.csv')
+    stops = pd.read_csv('transit data/google_transit/stops.csv')
     print("Creating list of stops...")
     
     filtered_stops = geopandas.GeoDataFrame()
@@ -75,7 +75,7 @@ def filter_stops_by_routes(routes): #input a route. Creates a shapefile containi
     
     print("{} stops identified. Creating stop shapefiles...".format(len(stop_codes)))
 
-    stops = geopandas.read_file('Transit data/vic_shapefile_busstops/bus_stops.shp')
+    stops = geopandas.read_file('transit data/vic_shapefile_busstops/bus_stops.shp')
     stops = stops[stops['stopid'].isin(stop_codes)]
 
     return(stops)
