@@ -18,9 +18,9 @@ os.chdir(newDirectory)
 # in the output.
 # Street names should be all uppercase.
 property_exclude_list = [
-    '100 COOK', # Beacon Hill Park
-    '1495 FAIRFIELD', # Ross Bay Cemetery
-    '1401 ROCKLAND', # Government House
+    '100 Cook St', # Beacon Hill Park
+    '1495 Fairfield Rd', # Ross Bay Cemetery
+    '1401 Rockland Ave', # Government House
 ]
 
 #deletes invalid geometries
@@ -28,32 +28,34 @@ property_exclude_list = [
 #this function simplifies the shapefile and combines them all to reduce processing needs
 def simplify_properties():
 
-    properties = gpd.read_file("cov properties/CRD_Properties.geojson")
+    #data from here: https://hub.arcgis.com/datasets/SIPP::crd-properties/explore?layer=3&location=48.440229%2C-123.278142%2C13.00
+    properties = gpd.read_file("CRD Properties/CRD_Properties.geojson")
+    properties = properties[properties['geometry'].is_valid]
+    
+    properties['City'] = None
+    
+    #Each city has a jurisdiction code. 317 is Oak Bay, Esquimalt is 307, City of Victoria is 234, and Saanich is 308, 309, or 389
 
-    #download here: https://hub.arcgis.com/maps/SIPP::crd-properties/explore?location=48.617052%2C-123.762900%2C10.11
-    #(file too large for github)
+    #the relevant column is '"BCAJurisdiction' and stores data as text
+    #Create a column called City and fill it with the appropriate city name
+    def code_to_city(code):
+        if code == '317':
+            return 'OB'
+        elif code == '307':
+            return 'ES'
+        elif code == '234':
+            return 'VC'
+        elif code in ['308', '309', '389']:
+            return 'SN'
+        return(None)
+    
+    properties['City'] = properties['BCAJurisdiction'].apply(code_to_city)
 
-    #filter to just core municipalities
-    munis = ['VC','OB','SN','ES','VR']
-    properties = properties[properties['City'].isin(munis)]
-
-    #remove invalid geometries
-    properties = properties[properties.is_valid]
-    properties = properties[properties['StreetNumber'].notnull()]
-
-    #utm zone 10n
-    #properties = properties.to_crs(epsg=26910)
-    #properties.geometry = properties.geometry.buffer(0)
-
-    #make address all upercase
-    properties['StreetName'] = properties['StreetName'].str.upper()
-    #create pd column of Address Combined that combined StreetNumber and StreetName
+    properties = properties[properties['City'].isin(['VC', 'OB', 'ES', 'SN'])]
+    properties = properties[['Folio', 'City', 'StreetName', 'StreetNumber', 'geometry']]
     properties['AddressCombined'] = properties['StreetNumber'].astype(str) + ' ' + properties['StreetName']
-
-    #print number of rows
-    print('Number of rows: ' + str(len(properties.index)))
-    #reduce df to just AddressCombined, City and geometry
-    properties = properties[[ 'City', 'AddressCombined',  'geometry']]
+    
+    #remove properties that are in the exclude list
     properties = properties[~properties['AddressCombined'].isin(property_exclude_list)]
     
     #dissolve shapes with the same AddressCombined
@@ -63,10 +65,8 @@ def simplify_properties():
     print('Number of rows: ' + str(len(properties.index)))
 
     #to geojson
-    properties.to_file("cov properties/core muni properties dissolved.geojson", driver='GeoJSON')
+    properties.to_file("CRD Properties/core muni properties dissolved.geojson", driver='GeoJSON')
 
-    properties.plot()
-    plt.show()
     return
 
 simplify_properties()

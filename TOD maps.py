@@ -34,8 +34,10 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
+routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
+
 #function updates the stop and schedule data. Run every service season
-def update_static(url='http://victoria.mapstrat.com/current/google_transit.zip', extract_to='google_transit'):
+def update_static(url='http://victoria.mapstrat.com/current/google_transit.zip', extract_to='transit_data/google_transit'):
     shutil.rmtree(extract_to)
     print('Deleted ' + extract_to)
     http_response = urlopen(url)
@@ -50,39 +52,39 @@ def update_static(url='http://victoria.mapstrat.com/current/google_transit.zip',
         time.sleep(.5)
     return
 
-def filter_stops_by_route(route): #input a route. Creates a shapefile containing points representing each stop served by the route. **Includes stops served by route variants, e.x. 7N
-    stop_times = pd.read_csv('transit data/google_transit/stop_times.csv')
-    stops = pd.read_csv('transit data/google_transit/stops.csv')
+def filter_stops_by_routes(routes): #input a route. Creates a shapefile containing points representing each stop served by the route. **Includes stops served by route variants, e.x. 7N
+    stop_times = pd.read_csv('Transit data/google_transit/stop_times.csv')
+    stops = pd.read_csv('Transit data/google_transit/stops.csv')
     print("Creating list of stops...")
-    stop_IDs = []
-    for ind in stop_times.index:
-        headsign = stop_times['stop_headsign'][ind]
-        route_number = headsign[:headsign.find(" ")]
-        if route_number[-1].isalpha() == True:
-            route_number = route_number[:-1]
-        if route_number == route:
-            if stop_times['stop_id'][ind] not in stop_IDs:
-                stop_IDs.append(stop_times['stop_id'][ind])
-    stop_codes = []
-    for id in stop_IDs:
-        stop_codes.append(int(stops.loc[stops['stop_id']==id]['stop_code']))
+    
+    filtered_stops = geopandas.GeoDataFrame()
+    
+    for route in routes:
+        stop_IDs = []
+        for ind in stop_times.index:
+            headsign = stop_times['stop_headsign'][ind]
+            route_number = headsign[:headsign.find(" ")]
+            if route_number[-1].isalpha() == True:
+                route_number = route_number[:-1]
+            if route_number == route:
+                if stop_times['stop_id'][ind] not in stop_IDs:
+                    stop_IDs.append(stop_times['stop_id'][ind])
+        stop_codes = []
+        for id in stop_IDs:
+            stop_codes.append(int(stops.loc[stops['stop_id']==id]['stop_code']))
+    
     print("{} stops identified. Creating stop shapefiles...".format(len(stop_codes)))
 
-    stops = geopandas.read_file('transit data/vic_shapefile_busstops/bus_stops.shp')
+    stops = geopandas.read_file('Transit data/vic_shapefile_busstops/bus_stops.shp')
     stops = stops[stops['stopid'].isin(stop_codes)]
 
-    stops.to_file("transit data/filtered stops/route {} stops.shp".format(route))
-    return
+    return(stops)
 
 def map(routes, map_type="default"): #Input a LIST of routes. Creates ONE html file showing the transit zoning map, for the list of routes.
-    stops = geopandas.read_file("transit data/filtered stops/route {} stops.shp".format(routes[0]))
-
-    if len(routes) > 0:
-        for i in range(1,len(routes)):
-            stops = stops.append(geopandas.read_file("filtered stops/route {} stops.shp".format(routes[i])))
+    stops = filter_stops_by_routes(routes)
 
     #Create buffer and clip zoning
-    zones = geopandas.read_file('zoning/Harmonized_Zones_Dissolved.shp')
+    zones = geopandas.read_file('Zoning/Harmonized_Zones_Dissolved.shp')
     buf = stops.buffer(distance = 400, resolution = 1)
     clipped_zones = geopandas.clip(zones,buf)
     clipped_zones = clipped_zones.explode()
@@ -164,13 +166,3 @@ def map(routes, map_type="default"): #Input a LIST of routes. Creates ONE html f
     
     fig.write_html('maps/TOD.html')
     return
-
-routes = ['10', '4', '11', '14','15', '95', '2', '5', '7','3','27']
-
-for route in routes:
-    filter_stops_by_route(route)
-
-#map(routes,map_type="within_400m")
-
-
-#update_static()
