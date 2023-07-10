@@ -101,7 +101,7 @@ def create_property_scores():
     properties = properties.reset_index(drop=True)
     properties = properties.drop(columns=['index_right'])
 
-    properties.to_file("maps/analysis.geojson", driver='GeoJSON')
+    properties.to_file("CRD Properties/scored_properties.geojson", driver='GeoJSON')
 
     return
 

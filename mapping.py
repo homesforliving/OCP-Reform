@@ -27,16 +27,16 @@ os.chdir(newDirectory)
 
 #apply OCP score to properties
 def apply_score_and_zoning():
+    properties = gpd.read_file("CRD Properties/scored_properties.geojson")
+    properties = aggregate_amenities(properties)
+    properties = properties.to_crs("epsg:26910")
+
     major_roads = gpd.read_file('roads/CRD Major Roads.geojson').to_crs('epsg:26910')
     highways = gpd.read_file('roads/CRD Highways.geojson').to_crs('epsg:26910')
 
     #combine the two geometries into a blank geodataframe
     roads = gpd.GeoDataFrame(geometry = pd.concat([major_roads.geometry, highways.geometry], ignore_index=True))
     roads_buffer = gpd.GeoDataFrame(geometry=roads.buffer(25))
-
-    properties = gpd.read_file("maps/analysis.geojson")
-    properties = aggregate_amenities(properties)
-    properties = properties.to_crs("epsg:26910")
 
      #establishes a baseline zoning
     properties['Proposed Zoning'] = 'Missing Middle/Low Rise Apartments'
@@ -83,7 +83,7 @@ def map_proposed_ocp(properties):
                     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
-    fig.write_html("Maps/A - Proposed Zoning.html")
+    fig.write_html("docs/Maps/A - Proposed Zoning.html")
 
 def map_current_zoning(properties):
 
@@ -117,7 +117,7 @@ def map_current_zoning(properties):
                     )
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
-    fig.write_html("Maps/B - Current Zoning.html")
+    fig.write_html("docs/Maps/B - Current Zoning.html")
 
     return
 
@@ -174,7 +174,7 @@ def map_amenity_score(properties):
     #add fig2 to fig
     fig.add_trace(fig2.data[0])
 
-    fig.write_html("Maps/C - Amenity Score.html")
+    fig.write_html("docs/Maps/C - Amenity Score.html")
     
     return
 
@@ -257,7 +257,7 @@ def map_transit_score(properties):
     for data in fig_1.data:
         fig.add_trace(data)
     
-    fig.write_html("maps/D - Transit Score.html")
+    fig.write_html("docs/Maps/D - Transit Score.html")
     
     return
 
@@ -303,13 +303,13 @@ def map_top_50(properties):
     #zero margin
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     #to html
-    fig.write_html("Maps/E - Top 50.html")
+    fig.write_html("docs/Maps/E - Top 50.html")
 
     return
 
 #Call each map function
-#map_proposed_ocp(scored_properties)
-#map_current_zoning(scored_properties)
-#map_amenity_score(scored_properties)
-#map_transit_score(scored_properties)
-map_top_50(scored_properties)
+map_proposed_ocp(scored_properties)
+map_current_zoning(scored_properties)
+map_amenity_score(scored_properties)
+map_transit_score(scored_properties)
+#map_top_50(scored_properties)
