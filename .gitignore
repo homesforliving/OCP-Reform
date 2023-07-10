@@ -4,3 +4,4 @@ __pycache__/
 cov properties/CRD_Properties.geojson
 *.laz
 Building Heights/
+CRD Properties/CRD_Properties.geojson
