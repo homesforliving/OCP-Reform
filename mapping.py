@@ -122,14 +122,21 @@ def map_current_zoning(properties):
     return
 
 def map_amenity_score(properties):
+    # Discrete color scales cause huge bloat in the plotly choropleths, so this is
+    # a way to create discrete colors using a continuous color scale, for efficiency.
+    value_clamps = {
+        (0, 24): 0, (25, 49): 33, (50, 74): 67, (75, 100): 100
+    }
+    for (range, value) in value_clamps.items():
+        properties.loc[(properties['amenity_score'] >= range[0]) & (properties['amenity_score'] <= range[1]), 'rating'] = value
 
-    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='amenity_score',
-                                color_continuous_scale="cividis",
-                                mapbox_style="carto-darkmatter",
-                                zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
-                                opacity=.5,
-                                hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score', 'Current Zoning', 'Proposed Zoning']
-                                )
+    fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='rating',
+        color_continuous_scale="cividis",
+        mapbox_style="carto-darkmatter",
+        zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
+        opacity=.5,
+        hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score', 'Current Zoning', 'Proposed Zoning']
+    )
 
     fig.update_traces(hovertemplate = """
                             <b>%{customdata[0]}.</b><br> 
@@ -146,15 +153,17 @@ def map_amenity_score(properties):
     colorbar = dict(
     title = 'Amenity Score',
     tickmode='array',
-    tickvals=[properties['amenity_score'].min(), 100],
-    ticktext=['Amenity-Poor','Amenity-Rich'],
-
+    tickvals=[1,33,67,100],
+    ticktext=['Poor','Fair', 'Good', 'Excellent'],
+    tickfont={
+        'size': 20
+    }
     )
 
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0},
-                  coloraxis_colorbar=colorbar
-                  )
-    
+        coloraxis_colorbar=colorbar
+    )
+
     #also plot amenities
     amenities = pd.DataFrame()
     amenity_files = os.listdir('amenity data')
@@ -308,8 +317,8 @@ def map_top_50(properties):
     return
 
 #Call each map function
-map_proposed_ocp(scored_properties)
-map_current_zoning(scored_properties)
+# map_proposed_ocp(scored_properties)
+# map_current_zoning(scored_properties)
 map_amenity_score(scored_properties)
-map_transit_score(scored_properties)
+# map_transit_score(scored_properties)
 #map_top_50(scored_properties)
