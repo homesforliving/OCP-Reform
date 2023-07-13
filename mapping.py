@@ -134,18 +134,14 @@ def map_amenity_score(properties):
         color_continuous_scale="cividis",
         mapbox_style="carto-darkmatter",
         zoom=12, center = {"lat":  48.431699, "lon": -123.319873},
-        opacity=.5,
-        hover_data = ['AddressCombined', 'amenity_score', 'transit_score', 'OCP Score', 'Current Zoning', 'Proposed Zoning']
+        opacity=0.5,
+        hover_data = ['AddressCombined', 'amenity_score', 'Current Zoning']
     )
 
     fig.update_traces(hovertemplate = """
-                            <b>%{customdata[0]}.</b><br> 
-                            <b>Amenity Score:</b> %{customdata[1]}<br>
-                            <b>Transit Score:</b> %{customdata[2]}<br>
-                            <b>OCP Score:</b> %{customdata[3]}<br>
-                            <b>Current Zoning:</b> %{customdata[4]}<br>
-                            <b>Proposed Zoning:</b> %{customdata[5]}<br>
-                            """
+    <b>%{customdata[0]}.</b><br> 
+    <b>Amenity Score:</b> %{customdata[1]}<br>
+    <b>Current Zoning:</b> %{customdata[2]}<br>"""
                         
                     )
     
