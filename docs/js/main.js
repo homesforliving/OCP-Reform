@@ -22,8 +22,6 @@ function toggleNav() {
 }
 
 $(document).ready(function(){
-    $('#main-figure iframe').attr('src', 'Maps/A - Proposed Zoning.html')
-
     // Register main menu open/close actions
     $('#top-header, #closeMenuBtn, .openButton').on('click', function(e){
         e.stopPropagation();
