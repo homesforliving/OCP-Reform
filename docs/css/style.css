@@ -87,6 +87,26 @@ p {
   margin-bottom: 1em;
 }
 
+.image-wrapper {
+  position: relative;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(57, 57, 57, 0.5);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  backdrop-filter: blur(4px) brightness(70%);
+}
+
+.image-wrapper:hover .image-overlay {
+  display: flex;
+}
+
 #main-figure iframe {
   width: 100%;
   height: 100%;
@@ -94,6 +114,8 @@ p {
 }
 
 #main-figure img {
+  display: block;
+  object-fit: contain;
   width: 100%;
   height: auto;
   cursor: pointer;

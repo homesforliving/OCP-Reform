@@ -41,7 +41,7 @@ $(document).ready(function(){
     })
 
     // Handle fullscreen chart clicks
-    $('#fullscreen-btn, #main-figure img').on('click', function(){
+    $('#fullscreen-btn, #main-figure img, #main-figure .image-overlay').on('click', function(){
         // if already full screen; exit
         // else go fullscreen
         if (document.fullscreenElement) {
