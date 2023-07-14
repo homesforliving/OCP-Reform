@@ -141,9 +141,7 @@ def map_amenity_score(properties):
     fig.update_traces(hovertemplate = """
     <b>%{customdata[0]}.</b><br> 
     <b>Amenity Score:</b> %{customdata[1]}<br>
-    <b>Current Zoning:</b> %{customdata[2]}<br>"""
-                        
-                    )
+    <b>Current Zoning:</b> %{customdata[2]}<br>""")
     
    # set color bar title and labels
     colorbar = dict(
@@ -313,8 +311,8 @@ def map_top_50(properties):
     return
 
 #Call each map function
-# map_proposed_ocp(scored_properties)
-# map_current_zoning(scored_properties)
+map_proposed_ocp(scored_properties)
+map_current_zoning(scored_properties)
 map_amenity_score(scored_properties)
-# map_transit_score(scored_properties)
+map_transit_score(scored_properties)
 #map_top_50(scored_properties)
