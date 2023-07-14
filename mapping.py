@@ -84,6 +84,7 @@ def map_proposed_ocp(properties):
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     fig.write_html("docs/Maps/A - Proposed Zoning.html")
+    fig.write_image(file="docs/Maps/A - Proposed Zoning.png", format="png", width=1920, height=800)
 
 def map_current_zoning(properties):
 
@@ -118,6 +119,7 @@ def map_current_zoning(properties):
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
 
     fig.write_html("docs/Maps/B - Current Zoning.html")
+    fig.write_image(file="docs/Maps/B - Current Zoning.png", format="png", width=1920, height=800)
 
     return
 
@@ -178,6 +180,7 @@ def map_amenity_score(properties):
     fig.add_trace(fig2.data[0])
 
     fig.write_html("docs/Maps/C - Amenity Score.html")
+    fig.write_image(file="docs/Maps/C - Amenity Score.png", format="png", width=1920, height=800)
     
     return
 
@@ -261,6 +264,7 @@ def map_transit_score(properties):
         fig.add_trace(data)
     
     fig.write_html("docs/Maps/D - Transit Score.html")
+    fig.write_image(file="docs/Maps/D - Transit Score.png", format="png", width=1920, height=800)
     
     return
 
@@ -307,6 +311,7 @@ def map_top_50(properties):
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     #to html
     fig.write_html("docs/Maps/E - Top 50.html")
+    fig.write_image(file="docs/Maps/E - Top 50.png", format="png", width=1920, height=800)
 
     return
 
@@ -315,4 +320,4 @@ map_proposed_ocp(scored_properties)
 map_current_zoning(scored_properties)
 map_amenity_score(scored_properties)
 map_transit_score(scored_properties)
-#map_top_50(scored_properties)
+# map_top_50(scored_properties)

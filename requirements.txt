@@ -12,6 +12,7 @@ fonttools==4.39.3
 geopandas==0.12.2
 googlemaps==4.10.0
 idna==3.4
+kaleido==0.2.1
 kiwisolver==1.4.4
 matplotlib==3.7.1
 munch==2.5.0
@@ -19,7 +20,7 @@ numpy==1.24.2
 packaging==23.1
 pandas==2.0.0
 Pillow==9.5.0
-plotly==5.14.1
+plotly==5.15.0
 pyparsing==3.0.9
 pyproj==3.5.0
 python-dateutil==2.8.2

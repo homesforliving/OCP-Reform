@@ -93,6 +93,12 @@ p {
   border: none;
 }
 
+#main-figure img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
 #main-figure figcaption {
   display: flex;
   flex-flow: row nowrap;
