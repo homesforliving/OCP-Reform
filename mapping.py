@@ -25,6 +25,19 @@ else:
     newDirectory = directory[:(directory.rfind("\\")+1)]
 os.chdir(newDirectory)
 
+"""#also plot amenities
+amenities = pd.DataFrame()
+amenity_files = os.listdir('amenity data')
+for file in amenity_files:
+    df = pd.read_csv('amenity data/'+file)
+    amenities = pd.concat([amenities, df], ignore_index=True)
+
+#convert to gdf using Latitude	Longitude
+amenities = gpd.GeoDataFrame(amenities, geometry=gpd.points_from_xy(amenities.Longitude, amenities.Latitude))
+
+#to geopandas
+amenities.to_file("docs/Maps/amenities.geojson", driver='GeoJSON')
+"""
 #apply OCP score to properties
 def apply_score_and_zoning():
     properties = gpd.read_file("CRD Properties/scored_properties.geojson")
@@ -50,12 +63,27 @@ def apply_score_and_zoning():
     for index, row in properties.iterrows():
         if row['AddressCombined'] in intersecting_properties['AddressCombined'].values:
             properties.loc[index, 'Proposed Zoning'] = 'Mixed Use/Commercial'
+    
+    #Adjust current zoning map
+
+    properties['Current Zoning'] = properties['Current Zoning'].replace(['Single/Duplex'], 'SFH/Duplex Only')
+    #replace everything else with "Other/Unclassified"
+    properties['Current Zoning'] = properties['Current Zoning'].replace(['Commercial', 'Missing Middle', 'Comprehensive Development', 'Mixed Use', 'Apartment', 'Industrial', 'Rural Residential', 'Agricultural', 'Recreational', 'Institutional', 'Unclassified'], 'Other')
+
+    legend = {
+        "SFH/Duplex Only":"red",
+        "Other":"lightgrey"
+        }
 
     properties = properties.to_crs("epsg:4326")
 
+    #export to geojson
+
+    properties.to_file("docs/Maps/ANALYZED.geojson", driver='GeoJSON')
+
     return(properties)
 
-scored_properties = apply_score_and_zoning()
+#scored_properties = apply_score_and_zoning()
 
 def map_proposed_ocp(properties):
 
@@ -87,15 +115,6 @@ def map_proposed_ocp(properties):
     fig.write_image(file="docs/Maps/A - Proposed Zoning.png", format="png", width=1920, height=800)
 
 def map_current_zoning(properties):
-
-    properties['Current Zoning'] = properties['Current Zoning'].replace(['Single/Duplex'], 'SFH/Duplex Only')
-    #replace everything else with "Other/Unclassified"
-    properties['Current Zoning'] = properties['Current Zoning'].replace(['Commercial', 'Missing Middle', 'Comprehensive Development', 'Mixed Use', 'Apartment', 'Industrial', 'Rural Residential', 'Agricultural', 'Recreational', 'Institutional', 'Unclassified'], 'Other')
-
-    legend = {
-        "SFH/Duplex Only":"red",
-        "Other":"lightgrey"
-        }
     
     fig = px.choropleth_mapbox(properties, geojson=properties.geometry, locations=properties.index, color='Current Zoning',
                             mapbox_style="carto-positron",
@@ -315,9 +334,44 @@ def map_top_50(properties):
 
     return
 
-#Call each map function
+"""#Call each map function
 map_proposed_ocp(scored_properties)
 map_current_zoning(scored_properties)
 map_amenity_score(scored_properties)
 map_transit_score(scored_properties)
-# map_top_50(scored_properties)
+# map_top_50(scored_properties)"""
+
+routes = gpd.read_file("transit data/vic_shapefile_routes/routes.shp")
+
+#turn route into int
+routes.Route = routes.Route.astype(int)
+
+#classify routes['Frequency'] into 3 categories
+rtn_routes = [95, 15, 70]
+ftn_routes = [4,6,11,14,26,27,28]
+local_routes = [1,2,5,3,7,8,9,10,11,12,13,17,21,22,24,25,30,31,32,35,39,43,46,47,48,50,51,52,53,54,55,56,57,58,59,60,61,63,64,65,71,72,75,81,82,83,85,87,88]
+
+def get_route_num(x):
+    #eliminate all characters that are letters with ""
+    x = x.replace("A", "")
+    x = x.replace("B", "")
+    x = x.replace("C", "")
+    x = x.replace("N", "")
+    x = x.replace("X", "")
+    try:
+        return(int(x[:x.find(" ")]))
+    except:
+        return(0)
+
+routes['Route'] = routes['Pattern'].apply(get_route_num)
+#remove 0s
+routes = routes[routes['Route'] != 0]
+
+routes.loc[routes['Route'].isin(rtn_routes), 'Frequency'] = 'RTN'
+routes.loc[routes['Route'].isin(ftn_routes), 'Frequency'] = 'FTN'
+routes.loc[routes['Route'].isin(local_routes), 'Frequency'] = 'LTN'
+
+#export to geojson
+routes.to_file("docs/Maps/routes.geojson", driver='GeoJSON')
+
+print(routes)
